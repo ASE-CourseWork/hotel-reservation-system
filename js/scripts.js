@@ -57,3 +57,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+function check(){
+    window.location.replace("../customer/rooms.html");
+}
