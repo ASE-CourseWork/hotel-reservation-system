@@ -57,14 +57,36 @@
         <!-- About-->
         <section class="page-section bg-primary" id="about">
             <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-lg-8 text-center">
-                        <h2 class="text-white mt-0">We've got what you need!</h2>
-                        <hr class="divider divider-light" />
-                        <p class="text-white-75 mb-4">Start Bootstrap has everything you need to get your new website up and running in no time! Choose one of our open source, free to download, and easy to use themes! No strings attached!</p>
-                        <a class="btn btn-light btn-xl" href="#services">Get Started!</a>
+                <h4 class="text-white text-center mb-4 font-weight-bold ">Make Your Reservation Now!</h4>
+                <form class="mt-4">
+                    <div class="row">
+                      <div class="col">
+                        <label for="date">Branches</label> <br>
+                        <select class="custom-select form-control" id="inputGroupSelect01">
+                            <option selected value="1">Kandy</option>
+                            <option value="2">Colombo</option>
+                            <option value="3">Wattala</option>
+                            <option value="4">Trincomalee</option>
+                          </select>                      
+                        </div>
+                      <div class="col">
+                        <label for="date">Arrival</label> 
+                        <input type="date" class="form-control" placeholder="start date">
+                      </div>
+                      <div class="col">
+                        <label for="date">Departure</label>
+                        <input type="date" class="form-control" placeholder="departure">
+                      </div>
+                      <div class="col">
+                        <label for="date">Agency Code</label> <br>
+                        <input type="text" class="form-control" placeholder="optional">
+                      </div>
+                      <div class="col">
+                        <label for="date"></label> <br>
+                        <button type="button" class="btn btn-warning">Check Availability</button>                      </div>
+                      
                     </div>
-                </div>
+                  </form>
             </div>
         </section>
         <!-- Services-->
