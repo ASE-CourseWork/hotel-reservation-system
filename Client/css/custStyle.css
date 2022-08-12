@@ -16,6 +16,11 @@ form{
 
 }
 
+.block{
+    width: 100%;
+    background-color: aquamarine;
+}
+
 .font-weight-light{
     font-size: 25px;
     font-weight: lighter;
