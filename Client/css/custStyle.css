@@ -42,9 +42,16 @@ label{
     justify-content: left;
     width: 45%;
     height: 20%;
-    border: solid gray 1px;
+    
     padding: 20px;
 }
+
+.room{
+    border: solid gray 1px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
 .pri{
     color: #3a8bf4;
 }
