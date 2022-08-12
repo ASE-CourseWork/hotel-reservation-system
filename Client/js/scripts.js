@@ -59,5 +59,5 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 function check(){
-    window.location.replace("../customer/rooms.html");
+    window.location.replace("../Client/customer/rooms.html");
 }
