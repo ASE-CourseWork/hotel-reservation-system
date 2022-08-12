@@ -36,3 +36,28 @@ label{
     padding-top: 10px;
     opacity: 0.3;
 }
+
+.roomes{
+    margin: auto;
+    justify-content: left;
+    width: 45%;
+    height: 20%;
+    border: solid gray 1px;
+    padding: 20px;
+}
+.pri{
+    color: #3a8bf4;
+}
+
+#select{
+    width: 130px;
+    height: 40px;
+    margin-left: 50%;
+    background-color: #3a8bf4;
+}
+
+.imm{
+    width: 130px;
+    height: 110px;
+    margin-left: 50%;
+}
