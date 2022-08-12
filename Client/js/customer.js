@@ -48,8 +48,8 @@ function generateRooms(){
         <div class="roomDetails">
             <div class="row">
                 <div class="col">
-                    <h3>Best Available Rate</h3>
-                    <h4 class="roomType">${rooms[i].type}</h4>
+                    <h5>Best Available Rate</h5>
+                    <h4 class="roomType">${rooms[i].type.toUpperCase()}</h4>
                     <p class="noOfPeople">Per Night | ${rooms[i].noOfPeople} People</p>
                 </div>
                 <div class="col">
@@ -89,27 +89,37 @@ function passRoom(event){
     let button = event.target
     let roomItem = button.parentElement.parentElement.parentElement
     let title = roomItem.getElementsByClassName('roomType')[0].innerText;
+    let peoCount = roomItem.getElementsByClassName('noOfPeople')[0].innerText;
     let price = parseFloat(roomItem.getElementsByClassName('price')[0].innerText.replace('Rs','')) 
     price+='000'
     let quantity = roomItem.getElementsByClassName('quantity')[0].value;
     let total = price*quantity ; 
     price+='Rs ' + price
-    addToCart(title,total,quantity)
+    addToCart(title,total,quantity,peoCount)
 }
 
 
-function addToCart(title,total,quantity){
+function addToCart(title,total,quantity,peoCount){
         let col = document.createElement('div')
         col.classList.add('cart')
         let roomsElements = document.getElementsByClassName('roomContent')[0];
-        let name = roomsElements.getElementsByClassName('roomName')
+        let name = roomsElements.getElementsByClassName('roomType')
+
+        for(let i=0; i<name.length;i++){
+            if(name[i].innerText == title){
+                alert('This Room Type is Already Selected!')
+                return
+            }
+        }
+
+
 
         let roomDivContent = 
         ` 
         <div class="card border-secondary mb-3">
             <div class="card-header">
-              <h3>${title}</h3>
-              <p>Per Night | 2 Adults, 1 Child</p>
+              <h3 class="roomType" >${title.toUpperCase()}</h3>
+              <p>${peoCount}</p>
             </div>
             <div class="card-body text-secondary">
               <h5 class="card-title">Rooms : ${quantity}</h5>
@@ -160,5 +170,5 @@ function calTotal(){
 
     let roomTotal = document.getElementsByClassName('totalPrice')[0];
     console.log(roomTotal);
-    roomTotal.innerText = `Rs.${totalCart}`
+    roomTotal.innerText = `Rs.${totalCart.toLocaleString()}`
 }
