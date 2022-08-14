@@ -15,10 +15,26 @@ signInButton.addEventListener("click", () => {
 const loginForm = document.getElementById("login");
 const registerForm = document.getElementById("register");
 
-loginForm.addEventListener("submit", () => {
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
   inputs = loginForm.getElementsByTagName("input");
   email = inputs[0].value;
   password = inputs[1].value;
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data); //redirect or show error
+      });
+  })();
 });
 
 registerForm.addEventListener("submit", (event) => {
@@ -30,6 +46,21 @@ registerForm.addEventListener("submit", (event) => {
   Uname = inputs[0].value;
   email = inputs[1].value;
   password = inputs[2].value;
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: Uname, email: email, password: password }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data); //redirect or show error
+      });
+  })();
 });
 
 //password validation
