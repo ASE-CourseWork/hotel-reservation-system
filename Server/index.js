@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: [process.env.BASE_URL],
+    origin: ["http://127.0.0.1:5500"],
     methods: ["GET", "POST"],
     credentials: true,
   })

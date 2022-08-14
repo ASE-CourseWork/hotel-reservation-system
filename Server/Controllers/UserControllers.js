@@ -1,4 +1,5 @@
 const User = require("../Models/UserModel");
+const jwt = require("jsonwebtoken");
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -9,7 +10,13 @@ module.exports.login = async (req, res, next) => {
     const match = req.body.password == user.password;
     if (!match) return res.status(400).json("Invalid Password");
     //todo: jwt token
-    res.json("login success");
+    const token = jwt.sign(
+      { _id: user._id, email: user.email },
+      process.env.TOKEN_SECRET
+    );
+    res.json({
+      Access_Token: token,
+    });
   } catch (err) {
     next(err);
   }

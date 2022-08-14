@@ -32,6 +32,7 @@ loginForm.addEventListener("submit", (event) => {
         return response.json();
       })
       .then(function (data) {
+        window.localStorage.setItem("auth", JSON.stringify(data));
         console.log(data); //redirect or show error
       });
   })();
