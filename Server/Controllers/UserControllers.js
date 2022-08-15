@@ -9,7 +9,6 @@ module.exports.login = async (req, res, next) => {
     //compare the password
     const match = req.body.password == user.password;
     if (!match) return res.status(400).json("Invalid Password");
-    //todo: jwt token
     const token = jwt.sign(
       { _id: user._id, email: user.email },
       process.env.TOKEN_SECRET

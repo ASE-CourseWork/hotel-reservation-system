@@ -19,8 +19,9 @@ app.use(
 );
 //import routes
 const users = require("./Routes/UserRoutes");
+const rooms = require("./Routes/RoomsRoutes");
 //Routes Middlewares
-app.use("/api", users);
+app.use("/api", users, rooms);
 
 const port = process.env.PORT;
 app.listen(port, () => console.log("server started in port", { port }));
