@@ -58,5 +58,5 @@ window.addEventListener("DOMContentLoaded", (event) => {
 function check() {
   var e = document.getElementById("inputGroupSelect01");
   var text = e.options[e.selectedIndex].text;
-  window.location.replace(`../Client/customer/rooms.html?branch=${text}`);
+  window.location = `../Client/customer/rooms.html?branch=${text}`;
 }

@@ -47,12 +47,12 @@ function generateRooms() {
             </div>
             <div class="row secondCol">
                 <div class="col-4">
-                    <h4 class="price" class="pri">${
+                    <h4 class="price" class="pri">Rs. ${
                       rooms[i].RoomType.price
                     } </h4>
                 </div>
                 <div class="col-4">
-                    <input type="number" min="1" maxlength = ${
+                    <input type="number" min="1" max= ${
                       rooms[i].noOfRoom
                     } class="quantity" style="width: 45px" value="1">     
                 </div>
@@ -80,9 +80,8 @@ function passRoom(event) {
   let title = roomItem.getElementsByClassName("roomType")[0].innerText;
   let peoCount = roomItem.getElementsByClassName("noOfPeople")[0].innerText;
   let price = parseFloat(
-    roomItem.getElementsByClassName("price")[0].innerText.replace("Rs", "")
+    roomItem.getElementsByClassName("price")[0].innerText.replace("Rs.", "")
   );
-  price += "000";
   let quantity = roomItem.getElementsByClassName("quantity")[0].value;
   let total = price * quantity;
   price += "Rs " + price;

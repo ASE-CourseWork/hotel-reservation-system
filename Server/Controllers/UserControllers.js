@@ -10,7 +10,7 @@ module.exports.login = async (req, res, next) => {
     const match = req.body.password == user.password;
     if (!match) return res.status(400).json("Invalid Password");
     const token = jwt.sign(
-      { _id: user._id, email: user.email },
+      { _id: user._id, email: user.email, account: user.account },
       process.env.TOKEN_SECRET
     );
     res.json({
@@ -31,6 +31,7 @@ module.exports.register = async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      account: req.body.account,
     });
     await user.save((error) => {
       if (error) {
@@ -42,4 +43,8 @@ module.exports.register = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+module.exports.auth = async (req, res, next) => {
+  res.json({ Success: true, Account: req.user.account });
 };

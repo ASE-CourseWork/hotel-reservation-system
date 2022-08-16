@@ -2,14 +2,42 @@ const signUpButton = document.getElementById("signUp");
 const signInButton = document.getElementById("signIn");
 const container = document.getElementById("container");
 
-signUpButton.addEventListener("click", () => {
-  container.classList.add("right-panel-active");
-});
+//signUpButton.addEventListener("click", () => {
+// container.classList.add("right-panel-active");
+//});
 
-signInButton.addEventListener("click", () => {
-  container.classList.remove("right-panel-active");
-});
-
+//signInButton.addEventListener("click", () => {
+// container.classList.remove("right-panel-active");
+//});
+window.onload = function () {
+  const auth = window.localStorage.getItem("auth");
+  if (auth) {
+    (async () => {
+      await fetch("http://127.0.0.1:2001/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": auth.slice(1, -1),
+        },
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          if (data.Success == true) {
+            if (data.Account == "Admin") {
+              window.location = "../Admin";
+              return;
+            }
+            if (data.Account == "Clerk") {
+              window.location = "../Clerk";
+              return;
+            }
+          }
+        });
+    })();
+  }
+};
 //login and register form submission
 ////// todo : css for validations messages
 const loginForm = document.getElementById("login");
@@ -32,7 +60,7 @@ loginForm.addEventListener("submit", (event) => {
         return response.json();
       })
       .then(function (data) {
-        window.localStorage.setItem("auth", JSON.stringify(data));
+        window.localStorage.setItem("auth", JSON.stringify(data.Access_Token));
         console.log(data); //redirect or show error
       });
   })();
