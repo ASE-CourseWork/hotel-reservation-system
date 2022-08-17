@@ -3,8 +3,10 @@ let rooms = [];
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const branch = urlParams.get("branch");
-
+import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+let socket = undefined;
 window.onload = function () {
+  socket = io("http://localhost:2001");
   (async () => {
     await fetch("http://127.0.0.1:2001/api/rooms", {
       method: "POST",
@@ -22,6 +24,9 @@ window.onload = function () {
         selectRoomButtons();
       });
   })();
+};
+window.onunload = function () {
+  socket.close();
 };
 ////todo :
 function generateRooms() {
@@ -54,7 +59,9 @@ function generateRooms() {
                 <div class="col-4">
                     <input type="number" min="1" max= ${
                       rooms[i].noOfRoom
-                    } class="quantity" style="width: 45px" value="1">     
+                    } class="quantity" style="width: 45px" value="1"> Rooms - <h5>${
+      rooms[i].noOfRoom
+    }</h5>     
                 </div>
                 <div class="col-2 selectRoomDiv">
                     <input type="button" value="Select" class="addRoomBtn btn btn-success" id="select">

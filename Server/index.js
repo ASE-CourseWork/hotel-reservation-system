@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
+const socket = require("socket.io");
 //mongodb
 require("./mongodb");
 
@@ -24,4 +24,19 @@ const rooms = require("./Routes/RoomsRoutes");
 app.use("/api", users, rooms);
 
 const port = process.env.PORT;
-app.listen(port, () => console.log("server started in port", { port }));
+const server = app.listen(port, () =>
+  console.log("server started in port", { port })
+);
+
+//socket io server initialization
+const io = socket(server, {
+  cors: {
+    origin: ["http://127.0.0.1:5500"],
+    credentials: true,
+  },
+});
+
+//connection to socket io server
+io.on("connect", (socket) => {
+  console.log(io.engine.clientsCount);
+});
