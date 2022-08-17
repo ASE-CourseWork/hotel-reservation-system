@@ -29,12 +29,14 @@ module.exports.GetData = async (req, res, next) => {
     const branch = req.body.branch;
     //find the room with the specified branch and noOfRoom is grater or equal to 1
     await Branch.find({ branch: branch }).then((resp) => {
-      RoomNumber.find({ branch: resp[0]._id, noOfRoom: { $gte: 1 } })
-        .populate("RoomType")
-        .populate("branch", "branch")
-        .then((resp) => {
-          (resp.length > 0 && res.send(resp)) || res.send("No Room Available");
-        });
+      resp.length > 0
+        ? RoomNumber.find({ branch: resp[0]._id, noOfRoom: { $gte: 1 } })
+            .populate("RoomType")
+            .populate("branch", "branch")
+            .then((resp) => {
+              resp.length > 0 ? res.send(resp) : res.send("No Room Available");
+            })
+        : res.send("Branch Not Available");
     });
   } catch (err) {
     next(err);
