@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const Room = require("../Controllers/RoomControllers");
 
+//insert branches
+router.post("/branch", Room.Branch);
+
 //Get Room Type
 router.post("/rooms", Room.GetData);
 

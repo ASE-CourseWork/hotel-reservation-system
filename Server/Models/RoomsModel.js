@@ -8,7 +8,11 @@ const roomSchema = new mongoose.Schema({
     required: true,
   },
   noOfRoom: { type: Number, required: true },
-  branch: { type: String, required: true },
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branches",
+    required: true,
+  },
 });
 
 const RoomType = mongoose.model("Rooms", roomSchema);
