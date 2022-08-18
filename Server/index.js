@@ -35,7 +35,14 @@ const io = socket(server, {
     credentials: true,
   },
 });
+const Room = require("./Models/RoomsModel");
 
+const changeStream = Room.watch();
+
+changeStream.on("change", (change) => {
+  console.log(change.updateDescription.updatedFields.noOfRoom);
+  io.emit("changeData", change);
+});
 //connection to socket io server
 io.on("connect", (socket) => {
   console.log(io.engine.clientsCount);

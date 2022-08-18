@@ -13,4 +13,6 @@ router.post("/roomtype", Room.InsertData);
 //insert roomnumbers
 router.post("/roomnumber", Room.RoomNumber);
 
+//rooms book
+router.post("/roomsbook", Room.RoomBook);
 module.exports = router;

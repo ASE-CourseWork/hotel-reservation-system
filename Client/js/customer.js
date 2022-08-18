@@ -4,9 +4,11 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const branch = urlParams.get("branch");
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-let socket = undefined;
+let socket = io("http://localhost:2001");
 window.onload = function () {
-  socket = io("http://localhost:2001");
+  if (branch) {
+    socket.emit("join-room", branch);
+  }
   (async () => {
     await fetch("http://127.0.0.1:2001/api/rooms", {
       method: "POST",
@@ -30,7 +32,7 @@ window.onunload = function () {
 };
 ////todo :
 function generateRooms() {
-  rooms.lenght < 1 ? console.log("no rooms") : console.log(rooms);
+  rooms.length <= 0 ? console.log("no rooms") : console.log(rooms);
   for (let i = 0; i < rooms.length; i++) {
     let col = document.createElement("div");
     col.classList.add("room");
@@ -38,6 +40,7 @@ function generateRooms() {
     let roomDivContent = `
             <div class="row">
                 <div class="col">
+                <span class="roomID" hidden>${rooms[i]._id}</span>
                     <h5>Best Available Rate</h5>
                     <h4 class="roomType">${rooms[
                       i
@@ -93,8 +96,35 @@ function passRoom(event) {
   let total = price * quantity;
   price += "Rs " + price;
   addToCart(title, total, quantity, peoCount);
-}
 
+  let roomID = roomItem.getElementsByClassName("roomID")[0].innerText;
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/roomsbook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ roomID: roomID, rooms: quantity }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
+  })();
+}
+//update room numbers realtime
+socket.on("changeData", (event) => {
+  const updatedrooms = event.updateDescription.updatedFields.noOfRoom;
+  const roomID = event.documentKey._id;
+  //todo: regenerate the room details
+  var itemIndex = rooms.findIndex((x) => x._id == roomID);
+  var item = rooms[itemIndex];
+  item.noOfRoom = updatedrooms;
+  rooms[itemIndex] = item;
+  console.log(rooms);
+});
 function addToCart(title, total, quantity, peoCount) {
   let col = document.createElement("div");
   col.classList.add("cart");
@@ -108,7 +138,7 @@ function addToCart(title, total, quantity, peoCount) {
     }
   }
 
-  let roomDivContent = ` 
+  let roomDivContent = `<div id="ten-countdown"></div> 
         <div class="card border-secondary mb-3">
             <div class="card-header">
               <h3 class="roomType" >${title.toUpperCase()}</h3>
@@ -134,7 +164,6 @@ function addToCart(title, total, quantity, peoCount) {
   roomsElements.append(col);
 
   let removeButtons = document.getElementsByClassName("btn-danger");
-  console.log(removeButtons);
   for (let i = 0; i < removeButtons.length; i++) {
     let button = removeButtons[i];
     button.addEventListener("click", removeRoom);

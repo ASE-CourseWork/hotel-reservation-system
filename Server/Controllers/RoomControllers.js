@@ -84,3 +84,19 @@ module.exports.Branch = async (req, res, next) => {
     next(err);
   }
 };
+//
+module.exports.RoomBook = async (req, res, next) => {
+  try {
+    const roomID = req.body.roomID;
+    RoomNumber.findById(roomID).then((resp) => {
+      const updating_ID = resp.noOfRoom - req.body.rooms;
+      RoomNumber.findByIdAndUpdate(resp._id, { noOfRoom: updating_ID }).then(
+        (resp) => {
+          res.send({ updated: true });
+        }
+      );
+    });
+  } catch (e) {
+    next(e);
+  }
+};
