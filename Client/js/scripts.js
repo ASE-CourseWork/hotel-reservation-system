@@ -54,9 +54,34 @@ window.addEventListener("DOMContentLoaded", (event) => {
     elements: "#portfolio a.portfolio-box",
   });
 });
-
+var ariv;
 function check() {
   var e = document.getElementById("inputGroupSelect01");
-  var text = e.options[e.selectedIndex].text;
-  window.location = `../Client/customer/rooms.html?branch=${text}`;
+  let yourDate = new Date();
+
+  var branch = e.options[e.selectedIndex].text;
+  window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
+    ariv == undefined ? formatDate(yourDate) : ariv
+  }`;
 }
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-") + " " + [year, month, day].join("-");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  $('input[name="arrival"]').daterangepicker(
+    {
+      opens: "right",
+    },
+    function (start, end, label) {
+      ariv = start.format("YYYY-MM-DD") + " " + end.format("YYYY-MM-DD");
+    }
+  );
+});

@@ -118,12 +118,22 @@ function passRoom(event) {
 socket.on("changeData", (event) => {
   const updatedrooms = event.updateDescription.updatedFields.noOfRoom;
   const roomID = event.documentKey._id;
-  //todo: regenerate the room details
+
   var itemIndex = rooms.findIndex((x) => x._id == roomID);
   var item = rooms[itemIndex];
   item.noOfRoom = updatedrooms;
   rooms[itemIndex] = item;
   console.log(rooms);
+
+  const e = document.getElementsByClassName("roomDetails")[0];
+  var child = e.lastElementChild;
+  while (child) {
+    e.removeChild(child);
+    child = e.lastElementChild;
+  }
+  console.log(child);
+  generateRooms();
+  selectRoomButtons();
 });
 function addToCart(title, total, quantity, peoCount) {
   let col = document.createElement("div");
