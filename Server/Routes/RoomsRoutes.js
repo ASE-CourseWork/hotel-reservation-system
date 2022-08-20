@@ -15,4 +15,5 @@ router.post("/roomnumber", Room.RoomNumber);
 
 //rooms book
 router.post("/roomsbook", Room.RoomBook);
+router.post("/totalrooms", Room.TotalRooms);
 module.exports = router;

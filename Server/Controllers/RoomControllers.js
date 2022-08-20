@@ -100,3 +100,13 @@ module.exports.RoomBook = async (req, res, next) => {
     next(e);
   }
 };
+//
+module.exports.TotalRooms = async (req, res, next) =>{
+  try
+  {
+    
+  }
+  catch (e){
+    next(e);
+  }
+}
