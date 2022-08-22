@@ -3,7 +3,7 @@ const RoomNumber = require("../Models/RoomsModel");
 const Branch = require("../Models/BranchModel");
 const BookedRooms = require("../Models/BookedRoomsModel");
 const Reservation = require("../Models/ReservationModel");
-const { response, request } = require("express");
+var mongoose = require("mongoose");
 
 module.exports.InsertData = async (req, res, next) => {
   try {
@@ -68,37 +68,13 @@ module.exports.GetData = async (req, res, next) => {
                   }
                 }
                 if (i == rooms.length - 1) {
-                  //console.log(rooms);
                   res.json(rooms);
                 }
               }
-              //const map1 = Object.keys(data).rooms.map(room).then((room) => res.send(room));
-              //const map1 = Object.keys(data).rooms.map(room).then((room) => res.send(room));
-              /*async function loop() {
-                const map2 = rooms.map(function (rooms) {
-                  for (let y = 0; y < reservedRoom.length; y++) {
-                    if (
-                      rooms._id.toString() === reservedRoom[y].room.toString()
-                    ) {
-                      rooms.noOfRoom =
-                        rooms.noOfRoom - reservedRoom[y].noOfRooms;
-                    }
-                  }
-                  return rooms;
-                });
-                return map2;
-              }
-
-              loop().then((rooms) => {
-                console.log(rooms);
-                res.json(rooms);
-              });*/
             });
           });
-
-        /*                */
       } else {
-        res.send("Branch Not Available");
+        res.json("Branch Not Available");
       }
     });
   } catch (err) {
@@ -150,7 +126,7 @@ module.exports.Branch = async (req, res, next) => {
 //
 module.exports.RoomBook = async (req, res, next) => {
   try {
-    req.body.firstName == undefined && res.send("no");
+    req.body.firstName == undefined && res.json("no");
 
     const reserve = new Reservation({
       firstName: req.body.firstName,
@@ -178,16 +154,17 @@ module.exports.RoomBook = async (req, res, next) => {
 //
 module.exports.TotalRooms = async (req, res, next) => {
   try {
-    Branch.find({ branch: req.user.branch }).then((resp) => {
-      resp.length > 0
+    var branchId = mongoose.Types.ObjectId(req.user.branch);
+    console.log(branchId);
+    Branch.findById(branchId).then((resp) => {
+      resp
         ? RoomNumber.aggregate([
-            { $match: { branch: resp[0]._id } },
+            { $match: { branch: resp._id } },
             { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
           ]).then((resp) => {
-            console.log(resp);
-            res.send(resp);
+            res.json(resp);
           })
-        : res.send("Branch Not Found");
+        : res.json("Branch Not Found");
     });
   } catch (e) {
     next(e);
