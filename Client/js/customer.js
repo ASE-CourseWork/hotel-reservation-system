@@ -1,8 +1,12 @@
 let rooms = [];
+
 //get the branch name from the url
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const branch = urlParams.get("branch");
+const date = urlParams.get("a");
+const arrive = date.split(" ")[0];
+const departure = date.split(" ")[1];
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 let socket = io("http://localhost:2001");
 window.onload = function () {
@@ -15,7 +19,11 @@ window.onload = function () {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ branch: branch }),
+      body: JSON.stringify({
+        branch: branch,
+        arrive: arrive,
+        departure: departure,
+      }),
     })
       .then(function (response) {
         return response.json();
@@ -116,22 +124,26 @@ function passRoom(event) {
 }
 //update room numbers realtime
 socket.on("changeData", (event) => {
-  const updatedrooms = event.updateDescription.updatedFields.noOfRoom;
-  const roomID = event.documentKey._id;
+  const updatedrooms = event.fullDocument.noOfRooms;
+  const roomID = event.fullDocument.room;
+  const arrival = event.fullDocument.arrival;
+  const departuree = event.fullDocument.departure;
 
-  var itemIndex = rooms.findIndex((x) => x._id == roomID);
-  var item = rooms[itemIndex];
-  item.noOfRoom = updatedrooms;
-  rooms[itemIndex] = item;
-  console.log(rooms);
-
+  if (
+    (arrival > arrive && arrival < departure) ||
+    (departuree > departure && departuree < arrive)
+  ) {
+    var itemIndex = rooms.findIndex((x) => x._id == roomID);
+    var item = rooms[itemIndex];
+    item.noOfRoom = item.noOfRoom - updatedrooms;
+    rooms[itemIndex] = item;
+  }
   const e = document.getElementsByClassName("roomDetails")[0];
   var child = e.lastElementChild;
   while (child) {
     e.removeChild(child);
     child = e.lastElementChild;
   }
-  console.log(child);
   generateRooms();
   selectRoomButtons();
 });

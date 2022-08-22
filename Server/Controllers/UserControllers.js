@@ -9,17 +9,28 @@ module.exports.login = async (req, res, next) => {
     //compare the password
     const match = req.body.password == user.password;
     if (!match) return res.status(400).json("Invalid Password");
-    const token = jwt.sign(
-      { _id: user._id, email: user.email, account: user.account },
-      process.env.TOKEN_SECRET
-    );
-    res.json({
-      Access_Token: token,
-    });
+
+    if (user && match) {
+      const token = jwt.sign(
+        {
+          _id: user._id,
+          email: user.email,
+          account: user.account,
+          branch: user.branch != "" ? user.branch : "admin",
+        },
+        process.env.TOKEN_SECRET
+      );
+      res.json({
+        Access_Token: token,
+      });
+      return;
+    }
+    res.send("failed");
   } catch (err) {
     next(err);
   }
 };
+
 module.exports.register = async (req, res, next) => {
   try {
     //check if email already registered
@@ -32,6 +43,7 @@ module.exports.register = async (req, res, next) => {
       email: req.body.email,
       password: req.body.password,
       account: req.body.account,
+      branch: req.body.branch,
     });
     await user.save((error) => {
       if (error) {

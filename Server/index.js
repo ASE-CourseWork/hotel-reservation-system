@@ -35,13 +35,14 @@ const io = socket(server, {
     credentials: true,
   },
 });
-const Room = require("./Models/RoomsModel");
+const Reservation = require("./Models/ReservationModel");
 
-const changeStream = Room.watch();
+const changeStream = Reservation.watch();
 
 changeStream.on("change", (change) => {
-  console.log(change.updateDescription.updatedFields.noOfRoom);
-  io.emit("changeData", change);
+  change.operationType === "insert"
+    ? io.emit("changeData", change)
+    : console.log("no update");
 });
 //connection to socket io server
 io.on("connect", (socket) => {
