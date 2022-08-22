@@ -22,7 +22,7 @@ window.onload = function () {
   }
 
   (async () => {
-    await fetch("http://127.0.0.1:2001/api/totalrooms", {
+    await fetch("http://127.0.0.1:2001/api/clerkdata", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,9 @@ window.onload = function () {
         return response.json();
       })
       .then(function (data) {
-        document.getElementById("total-rooms").innerHTML = data[0].noOfRoom;
+        document.getElementById("total-rooms").innerHTML = data.totalrooms;
+        document.getElementById("total-reservations").innerHTML =
+          data.totalreservation;
       });
   })();
 };

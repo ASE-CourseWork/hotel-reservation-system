@@ -51,8 +51,6 @@ module.exports.GetData = async (req, res, next) => {
               ],
             }).then((reservedRoom) => {
               rooms = room;
-              const rooooms = "hello 1 2";
-              let result = [];
               for (let i = 0; i < rooms.length; i++) {
                 for (let y = 0; y < reservedRoom.length; y++) {
                   if (
@@ -63,7 +61,6 @@ module.exports.GetData = async (req, res, next) => {
                     if (rooms.indexOf(rooms[i]) == -1) {
                       console.log("room");
                       rooms.push(rooms[i]);
-                      result.push(rooms[i]);
                     }
                   }
                 }
@@ -155,14 +152,17 @@ module.exports.RoomBook = async (req, res, next) => {
 module.exports.TotalRooms = async (req, res, next) => {
   try {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
-    console.log(branchId);
     Branch.findById(branchId).then((resp) => {
       resp
         ? RoomNumber.aggregate([
             { $match: { branch: resp._id } },
             { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
           ]).then((resp) => {
-            res.json(resp);
+            let totalrooms = resp[0].noOfRoom;
+            Reservation.find({ branch: branchId }).then((resp) => {
+              let totalreservation = resp.length > 0 ? resp.length : 0;
+              res.json({ totalrooms, totalreservation });
+            });
           })
         : res.json("Branch Not Found");
     });

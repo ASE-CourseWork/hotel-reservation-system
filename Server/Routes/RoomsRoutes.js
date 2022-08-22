@@ -17,5 +17,5 @@ router.post("/roomnumber", Room.RoomNumber);
 router.post("/roomsbook", Room.RoomBook);
 
 //get total rooms
-router.post("/totalrooms", verify, Room.TotalRooms);
+router.post("/clerkdata", verify, Room.TotalRooms);
 module.exports = router;
