@@ -45,9 +45,9 @@ const registerForm = document.getElementById("register");
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  inputs = loginForm.getElementsByTagName("input");
-  email = inputs[0].value;
-  password = inputs[1].value;
+  const inputs = loginForm.getElementsByTagName("input");
+  const email = inputs[0].value;
+  const password = inputs[1].value;
   (async () => {
     await fetch("http://127.0.0.1:2001/api/login", {
       method: "POST",
@@ -61,7 +61,7 @@ loginForm.addEventListener("submit", (event) => {
       })
       .then(function (data) {
         window.localStorage.setItem("auth", JSON.stringify(data.Access_Token));
-        console.log(data); //redirect or show error
+        location.reload();
       });
   })();
 });

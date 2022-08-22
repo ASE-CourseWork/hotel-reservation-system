@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   account: { type: String, required: true },
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "branches",
+  },
 });
 
 const User = mongoose.model("user", userSchema);

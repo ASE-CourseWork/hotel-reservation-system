@@ -15,6 +15,11 @@ const ReservationSchema = new mongoose.Schema({
   payment: { type: Boolean, required: true },
   arrival: { type: Date, required: true },
   departure: { type: Date, required: true },
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "branches",
+    required: true,
+  },
 });
 
 const ReservationModel = mongoose.model("reservations", ReservationSchema);

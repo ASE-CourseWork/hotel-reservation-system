@@ -3,6 +3,7 @@ const RoomNumber = require("../Models/RoomsModel");
 const Branch = require("../Models/BranchModel");
 const BookedRooms = require("../Models/BookedRoomsModel");
 const Reservation = require("../Models/ReservationModel");
+const { response, request } = require("express");
 
 module.exports.InsertData = async (req, res, next) => {
   try {
@@ -28,58 +29,77 @@ module.exports.InsertData = async (req, res, next) => {
 //get all available rooms
 module.exports.GetData = async (req, res, next) => {
   try {
-    console.log(req.body.arrive);
+    let roooms = [];
     const branch = req.body.branch;
     //find the room with the specified branch and noOfRoom is grater or equal to 1
     await Branch.find({ branch: branch }).then((resp) => {
-      resp.length > 0
-        ? /*RoomNumber.find({
-            branch: resp[0]._id,
-          })
-            .populate("RoomType")
-            .exec(function (err, rooms) {
-              if (err) throw err;
-              var room = [];
-              Promise.all(
-                rooms.map((rooms) => {
-                  return Reservation.find({ room: rooms._id }).exec();
-                })
-              )
-                .then((resp) => {
-                  //TODO morethan arrival date and less than departure date
-                  room.push(resp);
-                  console.log(resp);
-                })
-                .catch((err) => {
-                  console.log(err);
+      if (resp.length > 0) {
+        const arrive = req.body.arrive;
+        const departure = req.body.departure;
+        let rooms = [];
+        // const rooms = [];
+        RoomNumber.find({ branch: resp[0]._id })
+          .populate("RoomType")
+          .then((room) => {
+            Reservation.find({
+              branch: resp[0]._id,
+              $or: [
+                { arrival: { $gte: arrive, $lt: departure } },
+                {
+                  departure: { $gt: departure, $lt: arrive },
+                },
+              ],
+            }).then((reservedRoom) => {
+              rooms = room;
+              const rooooms = "hello 1 2";
+              let result = [];
+              for (let i = 0; i < rooms.length; i++) {
+                for (let y = 0; y < reservedRoom.length; y++) {
+                  if (
+                    rooms[i]._id.toString() === reservedRoom[y].room.toString()
+                  ) {
+                    rooms[i].noOfRoom =
+                      rooms[i].noOfRoom - reservedRoom[y].noOfRooms;
+                    if (rooms.indexOf(rooms[i]) == -1) {
+                      console.log("room");
+                      rooms.push(rooms[i]);
+                      result.push(rooms[i]);
+                    }
+                  }
+                }
+                if (i == rooms.length - 1) {
+                  //console.log(rooms);
+                  res.json(rooms);
+                }
+              }
+              //const map1 = Object.keys(data).rooms.map(room).then((room) => res.send(room));
+              //const map1 = Object.keys(data).rooms.map(room).then((room) => res.send(room));
+              /*async function loop() {
+                const map2 = rooms.map(function (rooms) {
+                  for (let y = 0; y < reservedRoom.length; y++) {
+                    if (
+                      rooms._id.toString() === reservedRoom[y].room.toString()
+                    ) {
+                      rooms.noOfRoom =
+                        rooms.noOfRoom - reservedRoom[y].noOfRooms;
+                    }
+                  }
+                  return rooms;
                 });
-              rooms.forEach(function (rooms) {
-                console.log(rooms._id);
-                Reservation.find({ room: rooms._id }).exec((resp) => {
-                  //TODO morethan arrival date and less than departure date
-                  room.push(resp);
-                });
-              });
-            })*/
-          /*RoomNumber.aggregate(
-            {
-              $lookup: {
-                from: "reservations",
-                as: "reservations",
-                let: { room: "$_id" },
-                pipeline: [{ $match: { $expr: { $eq: ["$room", "$$room"] } } }],
-              },
-            },
-            {
-              $project: {
-                _id: 1,
-                noOfRooms: 1,
-              },
-            }
-          ).exec((err, result) => {
-            console.log(result);
-          })*/ res.send("I DONT KNOW THIS")
-        : res.send("Branch Not Available");
+                return map2;
+              }
+
+              loop().then((rooms) => {
+                console.log(rooms);
+                res.json(rooms);
+              });*/
+            });
+          });
+
+        /*                */
+      } else {
+        res.send("Branch Not Available");
+      }
     });
   } catch (err) {
     next(err);
@@ -142,6 +162,7 @@ module.exports.RoomBook = async (req, res, next) => {
       payment: req.body.payment,
       arrival: req.body.arrival,
       departure: req.body.departure,
+      branch: req.body.branch,
     });
     await reserve.save().then((saved, error) => {
       if (error) {
@@ -155,12 +176,20 @@ module.exports.RoomBook = async (req, res, next) => {
   }
 };
 //
-module.exports.TotalRooms = async (req, res, next) =>{
-  try
-  {
-    
-  }
-  catch (e){
+module.exports.TotalRooms = async (req, res, next) => {
+  try {
+    Branch.find({ branch: req.user.branch }).then((resp) => {
+      resp.length > 0
+        ? RoomNumber.aggregate([
+            { $match: { branch: resp[0]._id } },
+            { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
+          ]).then((resp) => {
+            console.log(resp);
+            res.send(resp);
+          })
+        : res.send("Branch Not Found");
+    });
+  } catch (e) {
     next(e);
   }
-}
+};

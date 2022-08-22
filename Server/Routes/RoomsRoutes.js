@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Room = require("../Controllers/RoomControllers");
-
+const verify = require("./auth");
 //insert branches
 router.post("/branch", Room.Branch);
 
@@ -15,5 +15,7 @@ router.post("/roomnumber", Room.RoomNumber);
 
 //rooms book
 router.post("/roomsbook", Room.RoomBook);
-router.post("/totalrooms", Room.TotalRooms);
+
+//get total rooms
+router.get("/totalrooms", verify, Room.TotalRooms);
 module.exports = router;
