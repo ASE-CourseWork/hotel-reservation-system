@@ -104,28 +104,11 @@ function passRoom(event) {
   let total = price * quantity;
   price += "Rs " + price;
   addToCart(title, total, quantity, peoCount);
-
-  let roomID = roomItem.getElementsByClassName("roomID")[0].innerText;
-  (async () => {
-    await fetch("http://127.0.0.1:2001/api/roomsbook", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ roomID: roomID, rooms: quantity }),
-    })
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-      });
-  })();
 }
 //update room numbers realtime
 socket.on("changeData", (event) => {
-  const updatedrooms = event.fullDocument.noOfRooms;
-  const roomID = event.fullDocument.room;
+  const roomes = event.fullDocument;
+  //const roomID = event.fullDocument.room;
   const arrival = event.fullDocument.arrival;
   const departuree = event.fullDocument.departure;
 
@@ -133,10 +116,12 @@ socket.on("changeData", (event) => {
     (arrival > arrive && arrival < departure) ||
     (departuree > departure && departuree < arrive)
   ) {
-    var itemIndex = rooms.findIndex((x) => x._id == roomID);
-    var item = rooms[itemIndex];
-    item.noOfRoom = item.noOfRoom - updatedrooms;
-    rooms[itemIndex] = item;
+    for (let i = 0; i < roomes.booking.length; i++) {
+      var itemIndex = rooms.findIndex((x) => x._id == roomes.booking[i].room);
+      var item = rooms[itemIndex];
+      item.noOfRoom = item.noOfRoom - roomes.booking[i].noOfRooms;
+      rooms[itemIndex] = item;
+    }
   }
   const e = document.getElementsByClassName("roomDetails")[0];
   var child = e.lastElementChild;
@@ -214,4 +199,8 @@ function calTotal() {
   let roomTotal = document.getElementsByClassName("totalPrice")[0];
   console.log(roomTotal);
   roomTotal.innerText = `Rs.${totalCart.toLocaleString()}`;
+}
+
+function alertEx() {
+  alert(200);
 }
