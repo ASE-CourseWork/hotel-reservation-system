@@ -16,6 +16,10 @@ form{
 
 }
 
+form:invalid>#submit {
+    pointer-events: none;
+}
+
 .block{
     width: 100%;
     background-color: aquamarine;

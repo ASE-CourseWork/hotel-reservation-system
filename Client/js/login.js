@@ -10,6 +10,7 @@ const container = document.getElementById("container");
 // container.classList.remove("right-panel-active");
 //});
 window.onload = function () {
+
   const auth = window.localStorage.getItem("auth");
   if (auth) {
     (async () => {
