@@ -18,4 +18,8 @@ router.post("/roomsbook", Room.RoomBook);
 
 //get total rooms
 router.post("/clerkdata", verify, Room.TotalRooms);
+
+router.get("/reservation/reciept/:id", Room.reciept);
+
+router.get("/pay", Room.pay);
 module.exports = router;

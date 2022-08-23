@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="cards roomContent py-3 px-5">
+        <div class="cards roomContent py-3 px-5" id="room_list">
         </div>
         <div class="cards py-3 px-5">
           <div class="card border-secondary mb-3">
@@ -67,10 +67,9 @@
 
   <div class="row registrationForm">
     <div class="col">
-      <form>
         <p class="font-weight-light">Guest information</p>
         <p>Enter personal information for booking</p>
-
+        <form id="userdetails">
         <div class="form-group">
           <label for="exampleInputEmail1">Email</label>
           <input required type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -92,16 +91,11 @@
             placeholder="0000000000">
         </div>
 
-        <input type="submit" onclick="alertEx()"  value="Submit" id="submit" class="btn btn-primary">
-        <script>
-          function alertEx(){
-            alert(200);
-          }
-        </script>
+        <input type="submit" value="Submit" id="submit" class="btn btn-primary">
       </form>
     </div>
     <div class="col">
-      <form onsubmit="alertEx()">
+      <form>
         <p class="font-weight-light">Reservation guarantee</p>
         <p>Booking payment will be charged on your credit card.</p>
 
@@ -123,14 +117,10 @@
           <input type="text" class="form-control" id="exampleInputPassword1" placeholder="xxx">
           <img class="weAcceptImg" src="../assets/img/weAccept.jpg" alt="">
         </div>
-
         <br>
       </form>
 
     </div>
-
-
-
   </div>
   </div>
   <script src="../js/customer.js" type="module"></script>

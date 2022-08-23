@@ -95,6 +95,7 @@ function selectRoomButtons() {
 function passRoom(event) {
   let button = event.target;
   let roomItem = button.parentElement.parentElement.parentElement;
+  let id = roomItem.getElementsByClassName("roomID")[0].innerText;
   let title = roomItem.getElementsByClassName("roomType")[0].innerText;
   let peoCount = roomItem.getElementsByClassName("noOfPeople")[0].innerText;
   let price = parseFloat(
@@ -103,7 +104,7 @@ function passRoom(event) {
   let quantity = roomItem.getElementsByClassName("quantity")[0].value;
   let total = price * quantity;
   price += "Rs " + price;
-  addToCart(title, total, quantity, peoCount);
+  addToCart(title, total, quantity, peoCount, id);
 }
 //update room numbers realtime
 socket.on("changeData", (event) => {
@@ -132,27 +133,26 @@ socket.on("changeData", (event) => {
   generateRooms();
   selectRoomButtons();
 });
-function addToCart(title, total, quantity, peoCount) {
+function addToCart(title, total, quantity, peoCount, id) {
   let col = document.createElement("div");
   col.classList.add("cart");
   let roomsElements = document.getElementsByClassName("roomContent")[0];
   let name = roomsElements.getElementsByClassName("roomType");
-
   for (let i = 0; i < name.length; i++) {
     if (name[i].innerText == title) {
       alert("This Room Type is Already Selected!");
       return;
     }
   }
-
-  let roomDivContent = `<div id="ten-countdown"></div> 
-        <div class="card border-secondary mb-3">
+  console.log(id);
+  let roomDivContent = `
+        <div class="card border-secondary mb-3"><span class="roomID" hidden >${id}</span>
             <div class="card-header">
               <h3 class="roomType" >${title.toUpperCase()}</h3>
               <p>${peoCount}</p>
             </div>
             <div class="card-body text-secondary">
-              <h5 class="card-title">Rooms : ${quantity}</h5>
+              <h5 class="card-title roomquant">Rooms : ${quantity}</h5>
               <p class="card-text">Breakfast, Lunch & Dinner<br>free Wifi & Room services</p>
               <br>
               <h5>Total</h5>
@@ -201,6 +201,57 @@ function calTotal() {
   roomTotal.innerText = `Rs.${totalCart.toLocaleString()}`;
 }
 
-function alertEx() {
-  alert(200);
-}
+document.getElementById("userdetails").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = e.target[0].value;
+  const first_name = e.target[1].value;
+  const last_name = e.target[2].value;
+  const phone = e.target[3].value;
+  const rooms = document.getElementById("room_list");
+  const alroom = rooms.children;
+  let booking = [];
+  if (alroom.length > 0) {
+    for (let i = 0; i < alroom.length; i++) {
+      const quantity = alroom[i]
+        .getElementsByClassName("roomquant")[0]
+        .innerText.split(":")[1]
+        .slice(-1);
+      const roomID = alroom[i].getElementsByClassName("roomID")[0].innerText;
+      booking.push({ room: roomID, noOfRooms: parseInt(quantity) });
+    }
+  } else {
+    console.log("please select a room");
+    return;
+  }
+  const total = document
+    .getElementById("total")
+    .innerText.split(".")[1]
+    .split(",")
+    .join("");
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/roomsbook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: first_name,
+        lastName: last_name,
+        email: email,
+        phoneNumber: phone,
+        booking: booking,
+        arrival: arrive,
+        departure: departure,
+        payment: false,
+        branch: branch,
+        total: total,
+      }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        window.location = data;
+      });
+  })();
+});

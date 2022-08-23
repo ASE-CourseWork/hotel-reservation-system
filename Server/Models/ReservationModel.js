@@ -24,6 +24,7 @@ const ReservationSchema = new mongoose.Schema({
     ref: "branches",
     required: true,
   },
+  total: { type: Number, required: true },
 });
 
 const ReservationModel = mongoose.model("reservations", ReservationSchema);

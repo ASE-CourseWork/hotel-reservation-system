@@ -72,8 +72,8 @@ function formatDate(date) {
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
-
-  return [year, month, day].join("-") + " " + [year, month, day].join("-");
+  day2 = "" + (d.getDate() + 1);
+  return [year, month, day].join("-") + " " + [year, month, day2].join("-");
 }
 document.addEventListener("DOMContentLoaded", () => {
   $('input[name="arrival"]').daterangepicker(

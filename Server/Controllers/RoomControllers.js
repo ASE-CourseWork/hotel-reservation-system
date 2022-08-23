@@ -1,3 +1,4 @@
+require("dotenv").config();
 const RoomType = require("../Models/RoomsTypesModel");
 const RoomNumber = require("../Models/RoomsModel");
 const Branch = require("../Models/BranchModel");
@@ -128,24 +129,30 @@ module.exports.Branch = async (req, res, next) => {
 module.exports.RoomBook = async (req, res, next) => {
   try {
     req.body.firstName == undefined && res.json("no");
-
-    const reserve = new Reservation({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      booking: req.body.booking,
-      payment: req.body.payment,
-      arrival: req.body.arrival,
-      departure: req.body.departure,
-      branch: req.body.branch,
-    });
-    await reserve.save().then((saved, error) => {
-      if (error) {
-        res.status(400).json("something went wrong" + error.message);
-      } else {
-        res.status(200).json("Reservation Added Successfully");
-      }
+    await Branch.find({ branch: req.body.branch }).then((resp) => {
+      const reserve = new Reservation({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        booking: req.body.booking,
+        payment: req.body.payment,
+        arrival: req.body.arrival,
+        departure: req.body.departure,
+        branch: resp[0]._id,
+        total: req.body.total,
+      });
+      reserve.save().then((saved, error) => {
+        if (error) {
+          res.status(400).json("something went wrong" + error.message);
+        } else {
+          res
+            .status(200)
+            .json(
+              `http://127.0.0.1:5500/Client/customer/receipt.html?id=${saved._id}`
+            );
+        }
+      });
     });
   } catch (e) {
     next(e);
@@ -169,6 +176,21 @@ module.exports.TotalRooms = async (req, res, next) => {
           })
         : res.json("Branch Not Found");
     });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.reciept = async (req, res, next) => {
+  try {
+    Reservation.findById(req.params.id).then((resp) => res.json(resp));
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.pay = async (req, res, next) => {
+  try {
   } catch (e) {
     next(e);
   }
