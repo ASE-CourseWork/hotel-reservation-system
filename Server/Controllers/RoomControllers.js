@@ -53,14 +53,18 @@ module.exports.GetData = async (req, res, next) => {
               rooms = room;
               for (let i = 0; i < rooms.length; i++) {
                 for (let y = 0; y < reservedRoom.length; y++) {
-                  if (
-                    rooms[i]._id.toString() === reservedRoom[y].room.toString()
-                  ) {
-                    rooms[i].noOfRoom =
-                      rooms[i].noOfRoom - reservedRoom[y].noOfRooms;
-                    if (rooms.indexOf(rooms[i]) == -1) {
-                      console.log("room");
-                      rooms.push(rooms[i]);
+                  for (let x = 0; x < reservedRoom[y].booking.length; x++) {
+                    if (
+                      rooms[i]._id.toString() ===
+                      reservedRoom[y].booking[x].room.toString()
+                    ) {
+                      rooms[i].noOfRoom =
+                        rooms[i].noOfRoom -
+                        reservedRoom[y].booking[x].noOfRooms;
+                      if (rooms.indexOf(rooms[i]) == -1) {
+                        console.log("room");
+                        rooms.push(rooms[i]);
+                      }
                     }
                   }
                 }
@@ -130,8 +134,7 @@ module.exports.RoomBook = async (req, res, next) => {
       lastName: req.body.lastName,
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
-      room: req.body.room,
-      noOfRooms: req.body.noOfRooms,
+      booking: req.body.booking,
       payment: req.body.payment,
       arrival: req.body.arrival,
       departure: req.body.departure,

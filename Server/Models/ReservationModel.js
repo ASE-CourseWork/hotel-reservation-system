@@ -6,12 +6,16 @@ const ReservationSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   phoneNumber: { type: Number, required: true },
-  room: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "rooms",
-    required: true,
-  },
-  noOfRooms: { type: Number, required: true },
+  booking: [
+    {
+      room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "rooms",
+        required: true,
+      },
+      noOfRooms: { type: Number, required: true },
+    },
+  ],
   payment: { type: Boolean, required: true },
   arrival: { type: Date, required: true },
   departure: { type: Date, required: true },
