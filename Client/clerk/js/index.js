@@ -39,4 +39,20 @@ window.onload = function () {
           data.totalreservation;
       });
   })();
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/clerkspecific", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": auth.slice(1, -1),
+      },
+    })
+      .then(function (response) {
+        //console.log(response.json());
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
+  })();
 };

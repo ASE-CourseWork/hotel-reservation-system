@@ -13,6 +13,18 @@ const roomSchema = new mongoose.Schema({
     ref: "Branches",
     required: true,
   },
+  room: [
+    {
+      ID: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: Boolean,
+        required: true,
+      },
+    },
+  ],
 });
 
 const RoomType = mongoose.model("Rooms", roomSchema);

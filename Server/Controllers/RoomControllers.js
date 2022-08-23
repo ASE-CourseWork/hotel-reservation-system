@@ -87,17 +87,46 @@ module.exports.GetData = async (req, res, next) => {
 //insert room number and branch for each roomtypes
 module.exports.RoomNumber = async (req, res, next) => {
   try {
-    const roomnumber = new RoomNumber({
-      RoomType: req.body.roomtype,
-      noOfRoom: req.body.noOfRoom,
-      branch: req.body.branch,
-    });
-    await roomnumber.save().then((saved, error) => {
-      if (error) {
-        res.status(400).json("something went wrong" + error.message);
-      } else {
-        res.status(200).json("Number of Room Added Successfully");
-      }
+    await Branch.find({ branch: req.body.branch }).then((resp) => {
+      const branch = resp[0]._id;
+      resp
+        ? RoomType.find({ type: req.body.roomtype }).then((resp) => {
+            const type = resp[0]._id;
+            RoomNumber.find({
+              branch: branch,
+              RoomType: type,
+            }).then((resp) => {
+              if (resp.length > 0) return res.json("Room Available");
+              let room = [];
+              let prefix = req.body.roomtype;
+              /\s/g.test(prefix)
+                ? (prefix =
+                    prefix.split(" ")[0].charAt(0) +
+                    prefix.split(" ")[1].charAt(0))
+                : (prefix = prefix.charAt(0));
+              for (let i = 0; i < req.body.noOfRoom; i++) {
+                let j = i + 1;
+                room.push({
+                  ID: prefix + j.toString().padStart(4, "0"),
+                  status: true,
+                });
+              }
+              const roomnumber = new RoomNumber({
+                RoomType: type,
+                noOfRoom: req.body.noOfRoom,
+                branch: branch,
+                room: room,
+              });
+              roomnumber.save().then((saved, error) => {
+                if (error) {
+                  res.status(400).json("something went wrong" + error.message);
+                } else {
+                  res.status(200).json("Number of Room Added Successfully");
+                }
+              });
+            });
+          })
+        : res.json("branch not found");
     });
   } catch (err) {
     next(err);
@@ -168,11 +197,27 @@ module.exports.TotalRooms = async (req, res, next) => {
             { $match: { branch: resp._id } },
             { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
           ]).then((resp) => {
+            if (resp.length <= 0) return res.json("no Rooms");
             let totalrooms = resp[0].noOfRoom;
             Reservation.find({ branch: branchId }).then((resp) => {
               let totalreservation = resp.length > 0 ? resp.length : 0;
               res.json({ totalrooms, totalreservation });
             });
+          })
+        : res.json("Branch Not Found");
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+module.exports.specificrooms = async (req, res, next) => {
+  try {
+    var branchId = mongoose.Types.ObjectId(req.user.branch);
+    Branch.findById(branchId).then((resp) => {
+      resp
+        ? RoomNumber.find({ branch: resp._id }).then((resp) => {
+            // console.log(resp);
+            res.send(resp);
           })
         : res.json("Branch Not Found");
     });
