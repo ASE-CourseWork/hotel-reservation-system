@@ -23,5 +23,5 @@ router.post("/clerkspecific", verify, Room.specificrooms);
 
 router.get("/reservation/reciept/:id", Room.reciept);
 
-router.get("/pay", Room.pay);
+router.post("/pay", Room.pay);
 module.exports = router;

@@ -4,6 +4,7 @@ const RoomNumber = require("../Models/RoomsModel");
 const Branch = require("../Models/BranchModel");
 const BookedRooms = require("../Models/BookedRoomsModel");
 const Reservation = require("../Models/ReservationModel");
+const Payment = require("../Models/PaymentDetailsModel");
 var mongoose = require("mongoose");
 
 module.exports.InsertData = async (req, res, next) => {
@@ -239,8 +240,10 @@ module.exports.reciept = async (req, res, next) => {
       })
       .then((resp, err) => {
         if (err) return res.json(false);
-
         res.json(resp);
+      })
+      .catch((e) => {
+        res.send(false);
       });
   } catch (e) {
     next(e);
@@ -249,6 +252,22 @@ module.exports.reciept = async (req, res, next) => {
 
 module.exports.pay = async (req, res, next) => {
   try {
+    var reservation = mongoose.Types.ObjectId(req.body.reservation);
+    const payment = new Payment({
+      cardNumber: req.body.cardNumber,
+      cardName: req.body.cardName,
+      expirydate: req.body.expirydate,
+      securitycode: req.body.securitycode,
+      reservation: reservation,
+    });
+    await Reservation.findByIdAndUpdate(reservation, { payment: true }).then(
+      (resp) => {
+        payment.save().then((save, err) => {
+          if (err) return res.json(false);
+          res.json(save);
+        });
+      }
+    );
   } catch (e) {
     next(e);
   }
