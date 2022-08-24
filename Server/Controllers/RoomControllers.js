@@ -228,7 +228,20 @@ module.exports.specificrooms = async (req, res, next) => {
 
 module.exports.reciept = async (req, res, next) => {
   try {
-    Reservation.findById(req.params.id).then((resp) => res.json(resp));
+    Reservation.findById(req.params.id)
+      .populate({
+        path: "booking.room",
+        select: "_id",
+        populate: {
+          path: "RoomType",
+          select: "type -_id",
+        },
+      })
+      .then((resp, err) => {
+        if (err) return res.json(false);
+
+        res.json(resp);
+      });
   } catch (e) {
     next(e);
   }
