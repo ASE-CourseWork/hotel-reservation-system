@@ -15,7 +15,7 @@ window.onload = function () {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
+        if (!data) return (window.location = `../`);
 
         const div = `<div class="container">
         <div class="row">
@@ -59,6 +59,7 @@ window.onload = function () {
                           id="exampleInputEmail1"
                           aria-describedby="emailHelp"
                           placeholder="xxxx xxxx xxxx xxxx"
+                          required
                         />
                       </div>
           
@@ -70,6 +71,7 @@ window.onload = function () {
                           class="form-control"
                           id="exampleInputPassword1"
                           placeholder="Your Name"
+                          required
                         />
                       </div>
           
@@ -81,6 +83,7 @@ window.onload = function () {
                           class="form-control"
                           id="exampleInputPassword1"
                           placeholder="6/25"
+                          required
                         />
                       </div>
           
@@ -92,6 +95,7 @@ window.onload = function () {
                           class="form-control"
                           id="exampleInputPassword1"
                           placeholder="xxx"
+                          required
                         />
                         
                         <img
@@ -104,13 +108,10 @@ window.onload = function () {
                      
                     </form>
                   </div>`
-                    : ` <p class="text-danger">*Please Make Payment to save your reservation</p></>
+                    : ` <p class="text-success">Your Payment is Success</p> <p>Please Copy your reservation ID - ${id}</p></p>
                     </div>
                   </div>`
                 }
-             
-  
-          
         </div>
       </div>
          `;
@@ -121,10 +122,34 @@ window.onload = function () {
           ).innerHTML += `<p class="card-text">Rooms : ${data.booking[i].room.RoomType.type} * ${data.booking[i].noOfRooms}</p>`;
         }
       });
+    document.getElementById("paydetails").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const cardNumber = e.target[0].value;
+      const cardName = e.target[1].value;
+      const expirydate = e.target[2].value;
+      const securitycode = e.target[3].value;
+
+      (async () => {
+        await fetch("http://127.0.0.1:2001/api/pay", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cardNumber: cardNumber,
+            cardName: cardName,
+            expirydate: expirydate,
+            securitycode: securitycode,
+            reservation: id,
+          }),
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            window.location.reload();
+          });
+      })();
+    });
   })();
 };
-
-document.getElementById("paydetails").addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log(e);
-});
