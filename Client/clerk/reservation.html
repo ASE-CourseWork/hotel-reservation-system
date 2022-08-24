@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="stylesheet" href="css/clerk.css">
 
     <title>Hotel Dashboard</title>
 
@@ -63,7 +63,7 @@
         <div class="sidebar-heading">Interface</div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#"
@@ -90,7 +90,7 @@
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
           <a
             class="nav-link collapsed"
             href="#"
@@ -110,9 +110,10 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Data</h6>
-              <a class="collapse-item" href="reservation.html"
+              <a class="collapse-item" href=""
                 >Reservation report</a
               >
+              
             </div>
           </div>
         </li>
@@ -143,6 +144,25 @@
               <i class="fa fa-bars"></i>
             </button>
 
+            <!-- Topbar Search -->
+            <form
+              class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control bg-light border-0 small"
+                  placeholder="Search for..."
+                  aria-label="Search"
+                  aria-describedby="basic-addon2"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -237,119 +257,72 @@
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
             >
-              <h1 class="h3 mb-0 text-gray-800"><b>Check In</b></h1>
+              <h1 class="h3 mb-0 text-gray-800"><b>Reservation report</b></h1>
             </div>
-            <!-- Content Row -->
 
-          </div>
-          <!-- /.container-fluid -->
-          <div class="container px-4 px-lg-5">
-            <h4 class="text-dark text-center mb-4 font-weight-bold">
-              Book Now!
-            </h4>
-            <form class="mt-4">
-              <div class="row">
-                <div class="col">
-                  <label for="date">Branches</label> <br />
-                  <select
-                    class="text-muted custom-select form-control" id="inputGroupSelect01">
-                    <option selected value="1">Kandy</option>
-                    <option value="2">Colombo</option>
-                    <option value="3">Wattala</option>
-                    <option value="4">Trincomalee</option>
-                  </select>
-                </div>
-                <div class="col">
-                  <label for="date">Arrival & Departure</label>
-                  <input
-                    type="text"
-                    class="text-muted form-control"
-                    name="arrival"
-                    id="arrival"
-                  />
-                </div>
-                <div class="col">
-                  <label for="date">Agency Code</label> <br />
-                  <input type="text" class="form-control" placeholder="optional" />
-                </div>
-                <div class="col">
-                  <label for="date"></label> <br />
-                  <button type="button" class="btn btn-secondary" onclick="check()">
-                    Check Availability
-                  </button>
+            <!-- table -->
+            <div class="row" style="overflow-y: auto; height: 400px">
+              <div class="col-lg-12 mb-4">
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                      Room details
+                    </h6>
+                  </div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Room type</th>
+                        <th scope="col">Total rooms</th>
+                        <th scope="col">Booked rooms</th>
+                        <th scope="col">Available rooms</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Luxury</th>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>8</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Deluxe</th>
+                        <td>20</td>
+                        <td>8</td>
+                        <td>12</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Suite</th>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>8</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Suite</th>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>8</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Suite</th>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>8</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Suite</th>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>8</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
+          <!-- /.container-fluid -->
         </div>
-        <br>
-        <br>
-        <div class="mail mx-5">
-        <div class="row">
-            <div class="col">
-                <input type="Email" class="form-control" placeholder="Enter the Email" />
-            </div>
-            <div class="col">
-                <button class="btn btn-success" id="search">Search</button>
-            </div>
-        </div>
-        </div>
-        <div class="card border-secondary mb-3 mx-5 my-3">
-            <div class="card-header">
-              <h4 class="roomType" >Reservation</h4>
-              <h5>ID : SB0001</h5>
-            </div>
-            <div class="card-body text-secondary">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Email</h5>
-                    </div>
-                    <div class="col">
-                        <h5>: hanifarifnazz@gmail.com</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">First Name</h5>
-                    </div>
-                    <div class="col">
-                        <h5>: Hanifa</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Last Name</h5>
-                    </div>
-                    <div class="col">
-                        <h5>: Rifnaz</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Phone No </h5>
-                    </div>
-                    <div class="col">
-                        <h5>: 0717100072</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Room No </h5>
-                    </div>
-                    <div class="col">
-                        <h5>: 002</h5>
-                    </div>
-                </div>
-                <div class="row ">
-                    <div class="col">
-                        
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-primary" id="delete">Assign</button>
-                    </div>
-                </div>
-                
-          </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
@@ -404,7 +377,7 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" href="../login">Logout</a>
           </div>
         </div>
       </div>
@@ -427,25 +400,5 @@
     <script src="js/chart-bar.js"></script>
 
     <script src="js/index.js"></script>
-
-    <script src="../js/scripts.js"></script>
-
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
-    ></script>
-    <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-  ></script>
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
-  />
   </body>
 </html>
