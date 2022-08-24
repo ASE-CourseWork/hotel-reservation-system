@@ -112,10 +112,10 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Data</h6>
               <a class="collapse-item" href="revenue.html"
-              >revenue report</a
-            >
-            <a class="collapse-item" href="noShow.html">no show customer report</a>
-            <a class="collapse-item" href="reservation.html">reservation report</a>
+                >revenue report</a
+              >
+              <a class="collapse-item" href="noShow.html">no show customer report</a>
+              <a class="collapse-item" href="reservation.html ">reservation report</a>  
             </div>
           </div>
         </li>
@@ -240,65 +240,70 @@
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
             >
-              <h1 class="h3 mb-0 text-gray-800"><b>Add Branches</b></h1>
+              <h1 class="h3 mb-0 text-gray-800"><b>Reservation Report</b></h1>
             </div>
-            <!-- Content Row -->
-            <div class="row registrationForm">
-              <div class="col">
-          
-                  <form id="branchdetails">  
-                    <p class="font-weight-light">Branch information</p>
-                  <p>Enter Branch information</p>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
+            <div class="row" style="overflow-y: auto; height: 400px">
+                <div class="col mb-4">
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        Room details
+                      </h6>
+                    </div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Room type</th>
+                          <th scope="col">Total rooms</th>
+                          <th scope="col">Booked rooms</th>
+                          <th scope="col">Available rooms</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Luxury</th>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Deluxe</th>
+                          <td>20</td>
+                          <td>8</td>
+                          <td>12</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Suite</th>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Suite</th>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Suite</th>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Suite</th>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>8</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Number</label>
-                    <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>
-                  <br>
-
-                  <p>Enter Clerk information</p>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Clerk Name</label>
-                    <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>   
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div> 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Password</label>
-                    <input required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>     
-                  <br>
-                  <p>Enter Number of Room information</p>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Single bed</label>
-                    <input required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>  
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Deluxe</label>
-                    <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>  
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Suite</label>
-                    <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                      placeholder="">
-                  </div>  
-                  <input type="submit" value="Submit" id="submit" class="btn btn-primary">
-                </form>
+                </div>
               </div>
-            </div>
+        </div>
+
+ 
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
