@@ -57,12 +57,17 @@ window.addEventListener("DOMContentLoaded", (event) => {
 var ariv;
 function check() {
   var e = document.getElementById("inputGroupSelect01");
+  var t = document.getElementById("agencycode").value;
   let yourDate = new Date();
-
   var branch = e.options[e.selectedIndex].text;
+  if (t == "") {
+    return (window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
+      ariv == undefined ? formatDate(yourDate) : ariv
+    }`);
+  }
   window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
     ariv == undefined ? formatDate(yourDate) : ariv
-  }`;
+  }&c=${t}`;
 }
 function formatDate(date) {
   var d = new Date(date),

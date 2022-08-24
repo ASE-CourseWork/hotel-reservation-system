@@ -7,6 +7,7 @@ const branch = urlParams.get("branch");
 const date = urlParams.get("a");
 const arrive = date.split(" ")[0];
 const departure = date.split(" ")[1];
+const coupon = urlParams.get("c");
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 let socket = io("http://localhost:2001");
 window.onload = function () {
@@ -144,6 +145,13 @@ function addToCart(title, total, quantity, peoCount, id) {
       return;
     }
   }
+  if (coupon == "CODERED") {
+    total = total - total * 0.25;
+  }
+  const d1 = new Date(departure);
+  const d2 = new Date(arrive);
+  const days = Math.abs(d1 - d2) / 1000 / 60 / 60 / 24;
+  total = total * days;
   console.log(id);
   let roomDivContent = `
         <div class="card border-secondary mb-3"><span class="roomID" hidden >${id}</span>
@@ -155,6 +163,7 @@ function addToCart(title, total, quantity, peoCount, id) {
               <h5 class="card-title roomquant">Rooms : ${quantity}</h5>
               <p class="card-text">Breakfast, Lunch & Dinner<br>free Wifi & Room services</p>
               <br>
+              <h5>${days} Night</h5>
               <h5>Total</h5>
               <div class="row">
                 <div class="col">
