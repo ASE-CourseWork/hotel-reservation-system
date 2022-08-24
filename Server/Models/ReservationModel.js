@@ -10,7 +10,7 @@ const ReservationSchema = new mongoose.Schema({
     {
       room: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "rooms",
+        ref: "Rooms",
         required: true,
       },
       noOfRooms: { type: Number, required: true },
@@ -21,7 +21,7 @@ const ReservationSchema = new mongoose.Schema({
   departure: { type: Date, required: true },
   branch: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "branches",
+    ref: "Branches",
     required: true,
   },
   total: { type: Number, required: true },
