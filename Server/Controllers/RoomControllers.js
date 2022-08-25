@@ -39,7 +39,6 @@ module.exports.GetData = async (req, res, next) => {
         const arrive = req.body.arrive;
         const departure = req.body.departure;
         let rooms = [];
-        // const rooms = [];
         RoomNumber.find({ branch: resp[0]._id })
           .populate("RoomType")
           .then((room) => {
@@ -137,8 +136,8 @@ module.exports.RoomNumber = async (req, res, next) => {
 //insert branches
 module.exports.Branch = async (req, res, next) => {
   try {
-    const user = await User.findOne({ branch: req.body.branch });
-    if (user) return res.status(400).json("Branch Already exists");
+    const branches = await Branch.findOne({ branch: req.body.branch });
+    if (branches) return res.status(400).json("Branch Already exists");
 
     const branch = new Branch({
       branch: req.body.branch,
@@ -192,20 +191,19 @@ module.exports.RoomBook = async (req, res, next) => {
 module.exports.TotalRooms = async (req, res, next) => {
   try {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
-    Branch.findById(branchId).then((resp) => {
-      resp
-        ? RoomNumber.aggregate([
-            { $match: { branch: resp._id } },
-            { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
-          ]).then((resp) => {
-            if (resp.length <= 0) return res.json("no Rooms");
-            let totalrooms = resp[0].noOfRoom;
-            Reservation.find({ branch: branchId }).then((resp) => {
-              let totalreservation = resp.length > 0 ? resp.length : 0;
-              res.json({ totalrooms, totalreservation });
-            });
-          })
-        : res.json("Branch Not Found");
+    RoomNumber.aggregate([
+      { $match: { branch: branchId } },
+      { $group: { _id: null, noOfRoom: { $sum: "$noOfRoom" } } },
+    ]).then((resp) => {
+      if (resp.length <= 0) return res.json("no Rooms");
+      let totalrooms = resp[0].noOfRoom;
+      Reservation.find({ branch: branchId }).then((resp) => {
+        let totalreservation = resp.length > 0 ? resp.length : 0;
+        BookedRooms.find({ branch: branchId }).then((resp) => {
+          let totalbooked = resp.length > 0 ? resp.length : 0;
+          res.json({ totalrooms, totalreservation, totalbooked });
+        });
+      });
     });
   } catch (e) {
     next(e);
@@ -216,10 +214,11 @@ module.exports.specificrooms = async (req, res, next) => {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
     Branch.findById(branchId).then((resp) => {
       resp
-        ? RoomNumber.find({ branch: resp._id }).then((resp) => {
-            // console.log(resp);
-            res.send(resp);
-          })
+        ? RoomNumber.find({ branch: resp._id }, "-branch")
+            .populate("RoomType", "type -_id")
+            .then((resp) => {
+              res.send(resp);
+            })
         : res.json("Branch Not Found");
     });
   } catch (e) {
@@ -272,6 +271,19 @@ module.exports.pay = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.checkin = async (req, res, next) => {
+  const booking = new BookedRooms({
+    reservation: req.body.reservation,
+    roomsBooked: req.body.noOfRoom,
+    branch: req.body.branch,
+  });
+  await booking.save().then((saved, error) => {
+    if (error) return res.json(false);
+    res.json(saved);
+  });
+};
+
 var cron = require("node-cron");
 
 cron.schedule("01 30 19 * * *", () => {

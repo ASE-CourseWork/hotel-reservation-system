@@ -5,7 +5,7 @@ const verify = require("./auth");
 router.post("/branch", Room.Branch);
 
 //Get Room Type
-router.post("/rooms", Room.GetData);
+router.post("/rooms", Room.GetData); //all users
 
 //Insert Room Type
 router.post("/roomtype", Room.InsertData);
@@ -14,7 +14,7 @@ router.post("/roomtype", Room.InsertData);
 router.post("/roomnumber", Room.RoomNumber);
 
 //rooms book
-router.post("/roomsbook", Room.RoomBook);
+router.post("/roomsbook", Room.RoomBook); //all users
 
 //get total rooms
 router.post("/clerkdata", verify, Room.TotalRooms);
@@ -24,4 +24,7 @@ router.post("/clerkspecific", verify, Room.specificrooms);
 router.get("/reservation/reciept/:id", Room.reciept);
 
 router.post("/pay", Room.pay);
+
+router.post("/checkin", Room.checkin);
+
 module.exports = router;
