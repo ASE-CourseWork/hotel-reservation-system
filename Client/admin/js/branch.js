@@ -10,9 +10,9 @@ document.getElementById("branchdetails").addEventListener("submit", (e) => {
   const suiteNo = e.target[7].value;
 
   let rooms = [
-    { roomtype: "Single Bed", noofroom: singleBedNo },
-    { roomtype: "Deluxe", noofroom: deluxeNo },
     { roomtype: "Suite", noofroom: suiteNo },
+    { roomtype: "Deluxe", noofroom: deluxeNo },
+    { roomtype: "Single Bed", noofroom: singleBedNo },
   ];
   (async () => {
     await fetch("http://127.0.0.1:2001/api/branch", {

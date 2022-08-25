@@ -214,9 +214,11 @@ module.exports.specificrooms = async (req, res, next) => {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
     Branch.findById(branchId).then((resp) => {
       resp
-        ? RoomNumber.find({ branch: resp._id }).then((resp) => {
-            res.send(resp);
-          })
+        ? RoomNumber.find({ branch: resp._id }, "-branch")
+            .populate("RoomType", "type -_id")
+            .then((resp) => {
+              res.send(resp);
+            })
         : res.json("Branch Not Found");
     });
   } catch (e) {
