@@ -34,9 +34,11 @@ window.onload = function () {
         return response.json();
       })
       .then(function (data) {
+        console.log(data);
         document.getElementById("total-rooms").innerHTML = data.totalrooms;
         document.getElementById("total-reservations").innerHTML =
           data.totalreservation;
+        document.getElementById("booked").innerHTML = data.totalbooked;
       });
   })();
   (async () => {

@@ -302,10 +302,13 @@
                         <div
                           class="text-xs font-weight-bold text-warning text-uppercase mb-1"
                         >
-                          Confirmed reservations
+                          Total Checked-In
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          18
+                        <div
+                          class="h5 mb-0 font-weight-bold text-gray-800"
+                          id="booked"
+                        >
+                          0
                         </div>
                       </div>
                       <div class="col-auto">
@@ -455,9 +458,7 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" onclick="logout()" href="../login"
-              >Logout</a
-            >
+            <a class="btn btn-primary" onclick="logout()" href="../">Logout</a>
             <script>
               function logout() {
                 window.localStorage.removeItem("auth");

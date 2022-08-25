@@ -8,6 +8,11 @@ const BookedroomSchema = new mongoose.Schema({
     required: true,
   },
   roomsBooked: { type: Number, required: true },
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branches",
+    required: true,
+  },
 });
 
 const BookedRooms = mongoose.model("booked_rooms", BookedroomSchema);

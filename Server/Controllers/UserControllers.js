@@ -1,5 +1,6 @@
 const User = require("../Models/UserModel");
 const jwt = require("jsonwebtoken");
+const Branch = require("../Models/BranchModel");
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -37,20 +38,22 @@ module.exports.register = async (req, res, next) => {
     const emailExist = await User.findOne({ email: req.body.email });
     if (emailExist) return res.status(400).json("Email already exists");
 
-    //register user
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      account: req.body.account,
-      branch: req.body.branch,
-    });
-    await user.save((error) => {
-      if (error) {
-        res.status(400).json("something went wrong" + error.message);
-      } else {
-        res.status(200).json("Registration success");
-      }
+    await Branch.find({ branch: req.body.branch }).then((resp) => {
+      //register user
+      const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        account: req.body.account,
+        branch: resp[0]._id,
+      });
+      user.save((error) => {
+        if (error) {
+          res.status(400).json("something went wrong" + error.message);
+        } else {
+          res.status(200).json("Registration success");
+        }
+      });
     });
   } catch (err) {
     next(err);
