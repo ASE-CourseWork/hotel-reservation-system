@@ -272,3 +272,10 @@ module.exports.pay = async (req, res, next) => {
     next(e);
   }
 };
+var cron = require("node-cron");
+
+cron.schedule("01 30 19 * * *", () => {
+  Reservation.deleteMany({ payment: false }).then((e) => {
+    console.log(e);
+  });
+});

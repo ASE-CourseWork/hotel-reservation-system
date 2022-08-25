@@ -110,10 +110,7 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Data</h6>
-              <a class="collapse-item" href=""
-                >Reservation report</a
-              >
-              
+              <a class="collapse-item" href="">Reservation report</a>
             </div>
           </div>
         </li>
@@ -377,7 +374,14 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="../login">Logout</a>
+            <a class="btn btn-primary" onclick="logout()" href="../login"
+              >Logout</a
+            >
+            <script>
+              function logout() {
+                window.localStorage.removeItem("auth");
+              }
+            </script>
           </div>
         </div>
       </div>

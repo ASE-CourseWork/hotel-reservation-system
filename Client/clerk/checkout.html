@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="stylesheet" href="css/clerk.css">
+    <link rel="stylesheet" href="css/clerk.css" />
 
     <title>Hotel Dashboard</title>
 
@@ -143,7 +144,6 @@
               <i class="fa fa-bars"></i>
             </button>
 
-
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
               <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -240,126 +240,155 @@
               <h1 class="h3 mb-0 text-gray-800"><b>Check out</b></h1>
             </div>
             <!-- Content Row -->
-
           </div>
           <!-- /.container-fluid -->
           <div class="container px-4 px-lg-5">
-            
             <form class="mt-4">
               <div class="row">
                 <div class="col">
                   <label for="date">Book id</label> <br />
-                  <input type="text" class="form-control" placeholder="enter book id" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="enter book id"
+                  />
                 </div>
-                
+
                 <div class="col">
                   <label for="date"></label> <br />
-                  <button type="button" class="btn btn-secondary mt-2" onclick="check()">
+                  <button
+                    type="button"
+                    class="btn btn-secondary mt-2"
+                    onclick="check()"
+                  >
                     Check Availability
                   </button>
                 </div>
                 <div class="col mt-4">
-                    <h1>TOTAL = </h1>
-                  </div>
+                  <h1>TOTAL =</h1>
+                </div>
               </div>
             </form>
           </div>
         </div>
-        <br>
-        <br>
+        <br />
+        <br />
         <div class="card border-secondary mb-3 mx-5 my-3">
-            <form action="">
-                <div class="card-header">
-                <h4 class="roomType" >Room number</h4>
-                <h5>ID : SB0001</h5>
-                </div>
-                <div class="card-body text-secondary">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Room type</h5>
-                        </div>
-                        <div class="col">
-                            <h5>: Laxury</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Name</h5>
-                        </div>
-                        <div class="col">
-                            <h5>: John</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title"> Arrival</h5>
-                        </div>
-                        <div class="col">
-                            <h5>: date</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Departure</h5>
-                        </div>
-                        <div class="col">
-                            <h5>: date</h5>
-                        </div>
-                    </div>
-                    
-                    <div class="row ">
-                        <div class="col">
-                            
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-primary" id="delete">Caculate total</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-          </div>
-          <div>
-
-          </div>
-          <div class="card border-secondary mb-3 mx-5 my-3">
+          <form action="">
+            <div class="card-header">
+              <h4 class="roomType">Room number</h4>
+              <h5>ID : SB0001</h5>
+            </div>
             <div class="card-body text-secondary">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Resturant</h5>
-                    </div>
-                    <div class="col">
-                        <h5><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></h5>
-                    </div>
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title">Room type</h5>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Telephone</h5>
-                    </div>
-                    <div class="col">
-                        <h5><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></h5>
-                    </div>
+                <div class="col">
+                  <h5>: Laxury</h5>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Laundary</h5>
-                    </div>
-                    <div class="col">
-                        <h5><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></h5>
-                    </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title">Name</h5>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title">Club</h5>
-                    </div>
-                    <div class="col">
-                        <h5><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></h5>
-                    </div>
+                <div class="col">
+                  <h5>: John</h5>
                 </div>
-          </div>
-          
+              </div>
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title">Arrival</h5>
+                </div>
+                <div class="col">
+                  <h5>: date</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title">Departure</h5>
+                </div>
+                <div class="col">
+                  <h5>: date</h5>
+                </div>
+              </div>
 
-          
+              <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                  <button class="btn btn-primary" id="delete">
+                    Caculate total
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div></div>
+        <div class="card border-secondary mb-3 mx-5 my-3">
+          <div class="card-body text-secondary">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title">Resturant</h5>
+              </div>
+              <div class="col">
+                <h5>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title">Telephone</h5>
+              </div>
+              <div class="col">
+                <h5>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title">Laundary</h5>
+              </div>
+              <div class="col">
+                <h5>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title">Club</h5>
+              </div>
+              <div class="col">
+                <h5>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                </h5>
+              </div>
+            </div>
           </div>
+        </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
@@ -414,7 +443,14 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" onclick="logout()" href="../login"
+              >Logout</a
+            >
+            <script>
+              function logout() {
+                window.localStorage.removeItem("auth");
+              }
+            </script>
           </div>
         </div>
       </div>
@@ -449,13 +485,13 @@
       src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
     ></script>
     <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-  ></script>
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
-  />
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
   </body>
 </html>

@@ -113,7 +113,6 @@
               <a class="collapse-item" href="reservation.html"
                 >Reservation report</a
               >
-              
             </div>
           </div>
         </li>
@@ -143,8 +142,6 @@
             >
               <i class="fa fa-bars"></i>
             </button>
-
-
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -244,7 +241,6 @@
 
             <!-- Content Row -->
             <div class="row">
-             
               <!-- Earnings (Monthly) Card Example -->
               <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
@@ -459,7 +455,14 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="../login">Logout</a>
+            <a class="btn btn-primary" onclick="logout()" href="../login"
+              >Logout</a
+            >
+            <script>
+              function logout() {
+                window.localStorage.removeItem("auth");
+              }
+            </script>
           </div>
         </div>
       </div>

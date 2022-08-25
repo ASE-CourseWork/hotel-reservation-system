@@ -339,7 +339,14 @@
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" onclick="logout()" href="../login"
+            >Logout</a
+          >
+          <script>
+            function logout() {
+              window.localStorage.removeItem("auth");
+            }
+          </script>
           </div>
         </div>
       </div>

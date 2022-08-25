@@ -145,7 +145,9 @@ function addToCart(title, total, quantity, peoCount, id) {
       return;
     }
   }
+  const discount = "";
   if (coupon == "CODERED") {
+    discount = "25%";
     total = total - total * 0.25;
   }
   const d1 = new Date(departure);
