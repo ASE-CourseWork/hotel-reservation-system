@@ -63,7 +63,6 @@ module.exports.GetData = async (req, res, next) => {
                         rooms[i].noOfRoom -
                         reservedRoom[y].booking[x].noOfRooms;
                       if (rooms.indexOf(rooms[i]) == -1) {
-                        console.log("room");
                         rooms.push(rooms[i]);
                       }
                     }
@@ -282,6 +281,46 @@ module.exports.checkin = async (req, res, next) => {
     if (error) return res.json(false);
     res.json(saved);
   });
+};
+
+module.exports.reservationsearch = async (req, res, next) => {
+  if (req.body.reservationID.match(/^[0-9a-fA-F]{24}$/)) {
+    var id = mongoose.Types.ObjectId(req.body.reservationID);
+    let reserve = await Reservation.findById(id);
+    let roomID = [];
+    if (reserve) {
+      for (let i = 0; i < reserve.booking.length; i++) {
+        let room = await RoomNumber.aggregate([
+          {
+            $match: {
+              _id: reserve.booking[i].room,
+            },
+          },
+          {
+            $project: {
+              room: {
+                $filter: {
+                  input: "$room",
+                  as: "rooms",
+                  cond: {
+                    $eq: ["$$rooms.status", true],
+                  },
+                },
+              },
+            },
+          },
+        ]);
+        roomID.push(room[0].room.slice(0, reserve.booking[i].noOfRooms));
+      }
+      let rese = [];
+
+      rese.push({ reserve, roomID });
+
+      return res.status(200).json(rese[0]);
+    }
+    res.status(400).json("Invalid reservationID");
+  }
+  res.status(400).json("Invalid reservationID");
 };
 
 var cron = require("node-cron");

@@ -36,10 +36,13 @@ window.onload = function () {
       })
       .then(function (data) {
         console.log(data);
-        document.getElementById("total-rooms").innerHTML = data.totalrooms;
-        document.getElementById("total-reservations").innerHTML =
-          data.totalreservation;
-        document.getElementById("booked").innerHTML = data.totalbooked;
+        document.getElementById("total-rooms") != null &&
+          (document.getElementById("total-rooms").innerHTML = data.totalrooms);
+        document.getElementById("total-reservations") != null &&
+          (document.getElementById("total-reservations").innerHTML =
+            data.totalreservation);
+        document.getElementById("booked") != null &&
+          (document.getElementById("booked").innerHTML = data.totalbooked);
       });
   })();
   (async () => {
@@ -152,3 +155,26 @@ window.onload = function () {
       });
   })();
 };
+
+document.getElementById("search").addEventListener("click", function () {
+  const id = document.getElementById("reservationID").value;
+  if (id != "") {
+    (async () => {
+      await fetch("http://127.0.0.1:2001/api/reservationsearch", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reservationID: id,
+        }),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    })();
+  }
+});

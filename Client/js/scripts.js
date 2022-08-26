@@ -60,14 +60,24 @@ function check() {
   var t = document.getElementById("agencycode").value;
   let yourDate = new Date();
   var branch = e.options[e.selectedIndex].text;
+  var location = window.location.href;
   if (t == "") {
-    return (window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
-      ariv == undefined ? formatDate(yourDate) : ariv
-    }`);
+    location == "http://127.0.0.1:5500/Client/Clerk/checkin.html"
+      ? (window.location = `../customer/rooms.html?branch=${branch}&a=${
+          ariv == undefined ? formatDate(yourDate) : ariv
+        }`)
+      : (window.location = `./customer/rooms.html?branch=${branch}&a=${
+          ariv == undefined ? formatDate(yourDate) : ariv
+        }`);
+    return;
   }
-  window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
-    ariv == undefined ? formatDate(yourDate) : ariv
-  }&c=${t}`;
+  location == "http://127.0.0.1:5500/Client/Clerk/checkin.html"
+    ? (window.location = `../customer/rooms.html?branch=${branch}&a=${
+        ariv == undefined ? formatDate(yourDate) : ariv
+      }&c=${t}`)
+    : (window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
+        ariv == undefined ? formatDate(yourDate) : ariv
+      }&c=${t}`);
 }
 function formatDate(date) {
   var d = new Date(date),

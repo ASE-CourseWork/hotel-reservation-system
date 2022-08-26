@@ -10,7 +10,6 @@ const container = document.getElementById("container");
 // container.classList.remove("right-panel-active");
 //});
 window.onload = function () {
-
   const auth = window.localStorage.getItem("auth");
   if (auth) {
     (async () => {
@@ -61,6 +60,12 @@ loginForm.addEventListener("submit", (event) => {
         return response.json();
       })
       .then(function (data) {
+        if (data == "Email Dosn't exists" || data == "Invalid Password") {
+          document.getElementById(
+            "loginerr"
+          ).innerText = `Invalid Email or Password`;
+          return;
+        }
         window.localStorage.setItem("auth", JSON.stringify(data.Access_Token));
         location.reload();
       });
