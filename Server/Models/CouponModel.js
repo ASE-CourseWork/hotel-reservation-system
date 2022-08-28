@@ -6,6 +6,6 @@ const couponSchema = new mongoose.Schema({
   percentage: { type: Number, required: true },
 });
 
-const Branches = mongoose.model("Coupon", couponSchema);
+const Coupon = mongoose.model("Coupon", couponSchema);
 
-module.exports = Branches;
+module.exports = Coupon;

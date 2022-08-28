@@ -5,6 +5,7 @@ const Branch = require("../Models/BranchModel");
 const BookedRooms = require("../Models/BookedRoomsModel");
 const Reservation = require("../Models/ReservationModel");
 const Payment = require("../Models/PaymentDetailsModel");
+const Coupons = require ("../Models/CouponModel");
 var mongoose = require("mongoose");
 
 module.exports.InsertData = async (req, res, next) => {
@@ -284,10 +285,47 @@ module.exports.checkin = async (req, res, next) => {
   });
 };
 
+module.exports.addcoupon = async (req, res, next) =>{
+  try
+  {
+    const coupon = await Coupons.findOne({ coupon: req.body.coupon });//check if couppon already exists, if do not add
+    if (coupon) return res.status(400).json("Coupon Already exists");
+
+    const Coupon = new Coupons({
+      coupon: req.body.coupon,
+      percentage: req.body.percentage,
+    });
+    await Coupon.save().then((saved, error) => {
+      if (error) {
+        res.status(400).json("something went wrong" + error.message);
+      } else {
+        res.status(200).json("Coupon Added Successfully");
+      }
+    });
+  }
+  catch(e)
+  {
+    next(e);
+  }
+};
+
+module.exports.getcoupon = async (req, res, next) => {
+  try
+  {
+    const coupon = await Coupons.findOne({ coupon: req.body.coupon });//check if couppon already exists, if do not add
+    if (coupon) return res.status(200).json(coupon.percentage);
+    res.status(400).json("invalid coupon");
+  }
+  catch(e)
+  {
+    next(e);
+  }
+};
+
 var cron = require("node-cron");
 
 cron.schedule("01 30 19 * * *", () => {
   Reservation.deleteMany({ payment: false }).then((e) => {
-    console.log(e);
+    console.log(e);//reservation records get delete at 7:00 pm
   });
 });

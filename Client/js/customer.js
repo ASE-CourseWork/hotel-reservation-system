@@ -8,6 +8,7 @@ const date = urlParams.get("a");
 const arrive = date.split(" ")[0];
 const departure = date.split(" ")[1];
 const coupon = urlParams.get("c");
+let discount = 0;
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 let socket = io("http://localhost:2001");
 window.onload = function () {
@@ -35,6 +36,31 @@ window.onload = function () {
         selectRoomButtons();
       });
   })();
+  if(coupon)
+  {
+    console.log(coupon);
+    (async () => {
+      await fetch("http://127.0.0.1:2001/api/getcoupon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({coupon: coupon})
+      })
+        .then(function (response) {
+          return response.json();//
+        })
+        .then(function (data) {
+         if(data != "invalid coupon")
+         {
+          discount = data;
+          
+          
+         }
+        //  console.log(data != "invalid coupon");
+      });
+    })();
+  }
 };
 window.onunload = function () {
   socket.close();
@@ -145,11 +171,7 @@ function addToCart(title, total, quantity, peoCount, id) {
       return;
     }
   }
-  const discount = "";
-  if (coupon == "CODERED") {
-    discount = "25%";
-    total = total - total * 0.25;
-  }
+  
   const d1 = new Date(departure);
   const d2 = new Date(arrive);
   const days = Math.abs(d1 - d2) / 1000 / 60 / 60 / 24;
@@ -205,11 +227,12 @@ function calTotal() {
     x = x / 1;
     totalCart += x;
   }
-  console.log(totalCart);
-
+  console.log(discount);
+  console.log(totalCart * (discount / 100));
+  discount>0? totalCart = (totalCart) - totalCart * (discount / 100): totalCart;
   let roomTotal = document.getElementsByClassName("totalPrice")[0];
   console.log(roomTotal);
-  roomTotal.innerText = `Rs.${totalCart.toLocaleString()}`;
+  roomTotal.innerText = `Rs.${ totalCart.toLocaleString()}`;
 }
 
 document.getElementById("userdetails").addEventListener("submit", (e) => {
