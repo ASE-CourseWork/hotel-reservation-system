@@ -25,6 +25,7 @@ const ReservationSchema = new mongoose.Schema({
     required: true,
   },
   total: { type: Number, required: true },
+  booked: { type: Boolean, required: true },
 });
 
 const ReservationModel = mongoose.model("reservations", ReservationSchema);

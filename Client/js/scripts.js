@@ -56,28 +56,20 @@ window.addEventListener("DOMContentLoaded", (event) => {
 });
 var ariv;
 function check() {
-  var e = document.getElementById("inputGroupSelect01");
+  var e = document.getElementById("branches");
   var t = document.getElementById("agencycode").value;
+
   let yourDate = new Date();
   var branch = e.options[e.selectedIndex].text;
   var location = window.location.href;
   if (t == "") {
-    location == "http://127.0.0.1:5500/Client/Clerk/checkin.html"
-      ? (window.location = `../customer/rooms.html?branch=${branch}&a=${
-          ariv == undefined ? formatDate(yourDate) : ariv
-        }`)
-      : (window.location = `./customer/rooms.html?branch=${branch}&a=${
-          ariv == undefined ? formatDate(yourDate) : ariv
-        }`);
-    return;
+    return (window.location = `./customer/rooms.html?branch=${branch}&a=${
+      ariv == undefined ? formatDate(yourDate) : ariv
+    }`);
   }
-  location == "http://127.0.0.1:5500/Client/Clerk/checkin.html"
-    ? (window.location = `../customer/rooms.html?branch=${branch}&a=${
-        ariv == undefined ? formatDate(yourDate) : ariv
-      }&c=${t}`)
-    : (window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
-        ariv == undefined ? formatDate(yourDate) : ariv
-      }&c=${t}`);
+  window.location = `../Client/customer/rooms.html?branch=${branch}&a=${
+    ariv == undefined ? formatDate(yourDate) : ariv
+  }&c=${t}`;
 }
 function formatDate(date) {
   var d = new Date(date),
@@ -100,3 +92,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 });
+
+window.onload = () => {
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/branch", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          document.getElementById(
+            "branches"
+          ).innerHTML += `<option>${data[i].branch}</option>`;
+        }
+      });
+  })();
+};

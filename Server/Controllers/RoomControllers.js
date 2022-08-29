@@ -33,8 +33,8 @@ module.exports.InsertData = async (req, res, next) => {
 //get all available rooms
 module.exports.GetData = async (req, res, next) => {
   try {
-    let roooms = [];
     const branch = req.body.branch;
+    console.log(branch);
     //find the room with the specified branch and noOfRoom is grater or equal to 1
     await Branch.find({ branch: branch }).then((resp) => {
       if (resp.length > 0) {
@@ -171,6 +171,7 @@ module.exports.RoomBook = async (req, res, next) => {
         departure: req.body.departure,
         branch: resp[0]._id,
         total: req.body.total,
+        booked: false,
       });
       reserve.save().then((saved, error) => {
         if (error) {
@@ -276,15 +277,43 @@ module.exports.pay = async (req, res, next) => {
 };
 //checkin the reserved customers
 module.exports.checkin = async (req, res, next) => {
-  const booking = new BookedRooms({
-    reservation: req.body.reservation,
-    roomsBooked: req.body.noOfRoom,
-    branch: req.body.branch,
-  });
-  await booking.save().then((saved, error) => {
-    if (error) return res.json(false);
-    res.json(saved);
-  });
+  const len = req.body.noOfRoom.length;
+  for (let i = 0; i < len; i++) {
+    var roomID = mongoose.Types.ObjectId(req.body.noOfRoom[i]._id);
+    for (let j = 0; j < req.body.noOfRoom[i].room.length; j++) {
+      const roomchange = req.body.noOfRoom[i].room[j].ID;
+      const room = await RoomNumber.updateOne(
+        { _id: roomID, "room.ID": roomchange },
+        {
+          $set: {
+            "room.$.status": false,
+          },
+        }
+      );
+      const reservation = await Reservation.updateOne(
+        {
+          _id: req.body.reservation,
+        },
+        {
+          $set: {
+            booked: true,
+          },
+        }
+      );
+      if (reservation && room) {
+        var branch = mongoose.Types.ObjectId(req.user.branch);
+        const booking = new BookedRooms({
+          reservation: req.body.reservation,
+          roomsBooked: req.body.noOfRoom,
+          branch: branch,
+        });
+        await booking.save().then((saved, error) => {
+          if (error) return res.json(false);
+          res.json(saved);
+        });
+      }
+    }
+  }
 };
 
 module.exports.addcoupon = async (req, res, next) =>{
@@ -326,8 +355,14 @@ module.exports.getcoupon = async (req, res, next) => {
 
 module.exports.reservationsearch = async (req, res, next) => {
   if (req.body.reservationID.match(/^[0-9a-fA-F]{24}$/)) {
+    var branch = mongoose.Types.ObjectId(req.user.branch);
     var id = mongoose.Types.ObjectId(req.body.reservationID);
-    let reserve = await Reservation.findById(id);
+    let reserve = await Reservation.find({
+      _id: id,
+      branch: branch,
+      booked: false,
+    });
+    reserve = reserve[0];
     let roomID = [];
     if (reserve) {
       for (let i = 0; i < reserve.booking.length; i++) {
@@ -351,7 +386,15 @@ module.exports.reservationsearch = async (req, res, next) => {
             },
           },
         ]);
-        roomID.push(room[0].room.slice(0, reserve.booking[i].noOfRooms));
+
+        if (room.length > 0) {
+          roomID.push({
+            _id: room[0]._id,
+            room: room[0].room.slice(0, reserve.booking[i].noOfRooms),
+          });
+        } else {
+          return res.status(400).json("not this branch");
+        }
       }
       let rese = [];
 
@@ -359,9 +402,18 @@ module.exports.reservationsearch = async (req, res, next) => {
 
       return res.status(200).json(rese[0]);
     }
-    res.status(400).json("Invalid reservationID");
+    //return res.status(400).json("Invalid reservationID");
   }
-  res.status(400).json("Invalid reservationID");
+  return res.status(400).json("Invalid reservationID");
+};
+
+module.exports.loadbranch = async (req, res, next) => {
+  try {
+    const branches = await Branch.find();
+    res.json(branches);
+  } catch (e) {
+    next(e);
+  }
 };
 
 var cron = require("node-cron");

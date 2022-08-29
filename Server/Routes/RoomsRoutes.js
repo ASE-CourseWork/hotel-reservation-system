@@ -4,6 +4,8 @@ const verify = require("./auth");
 //insert branches
 router.post("/branch", Room.Branch);
 
+router.get("/branch", Room.loadbranch);
+
 //Get Room Type
 router.post("/rooms", Room.GetData); //all users
 
@@ -31,6 +33,6 @@ router.post("/addcoupon", Room.addcoupon);
 
 router.post("/getcoupon", Room.getcoupon);
 
-router.post("/reservationsearch", Room.reservationsearch);
+router.post("/reservationsearch", verify, Room.reservationsearch);
 
 module.exports = router;

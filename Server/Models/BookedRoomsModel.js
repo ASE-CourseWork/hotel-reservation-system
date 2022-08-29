@@ -7,7 +7,7 @@ const BookedroomSchema = new mongoose.Schema({
     ref: "reservations",
     required: true,
   },
-  roomsBooked: { type: Number, required: true },
+  roomsBooked: { type: Array, required: true },
   branch: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Branches",

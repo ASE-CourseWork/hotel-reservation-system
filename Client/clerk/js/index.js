@@ -1,6 +1,8 @@
 let datas = [];
-window.onload = function () {
-  const auth = window.localStorage.getItem("auth");
+let auth;
+
+window.onload = () => {
+  auth = window.localStorage.getItem("auth");
   if (!auth) {
     window.location = "../Login";
     return;
@@ -155,15 +157,17 @@ window.onload = function () {
       });
   })();
 };
-
+let id;
+let roomID;
 document.getElementById("search").addEventListener("click", function () {
-  const id = document.getElementById("reservationID").value;
+  id = document.getElementById("reservationID").value;
   if (id != "") {
     (async () => {
       await fetch("http://127.0.0.1:2001/api/reservationsearch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "auth-token": auth.slice(1, -1),
         },
         body: JSON.stringify({
           reservationID: id,
@@ -174,7 +178,42 @@ document.getElementById("search").addEventListener("click", function () {
         })
         .then((data) => {
           console.log(data);
+          const alert = document.getElementById("erralert");
+          if (data == "Invalid reservationID") {
+            alert.classList.add("alert", "alert-danger");
+            alert.innerText = "Invalid reservation ID";
+          }
+          roomID = data.roomID;
+          document.getElementById("roomno").innerText = ":";
+          for (let i = 0; i < data.roomID.length; i++) {
+            for (let j = 0; j < data.roomID[i].room.length; j++) {
+              document.getElementById("roomno").innerText +=
+                " " + data.roomID[i].room[j].ID;
+            }
+          }
         });
     })();
   }
+});
+
+document.getElementById("assign").addEventListener("click", function () {
+  (async () => {
+    await fetch("http://127.0.0.1:2001/api/checkin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": auth.slice(1, -1),
+      },
+      body: JSON.stringify({
+        reservation: id,
+        noOfRoom: roomID,
+      }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  })();
 });
