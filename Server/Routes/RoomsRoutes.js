@@ -31,4 +31,6 @@ router.post("/addcoupon", Room.addcoupon);
 
 router.post("/getcoupon", Room.getcoupon);
 
+router.post("/reservationsearch", Room.reservationsearch);
+
 module.exports = router;

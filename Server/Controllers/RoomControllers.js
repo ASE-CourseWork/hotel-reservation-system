@@ -22,13 +22,14 @@ module.exports.InsertData = async (req, res, next) => {
       if (error) {
         res.status(400).json("something went wrong" + error.message);
       } else {
-        res.status(200).json("Room Type Added Successfully");
+        res.status(201).json("Room Type Added Successfully");
       }
     });
   } catch (err) {
     next(err);
   }
 };
+
 //get all available rooms
 module.exports.GetData = async (req, res, next) => {
   try {
@@ -64,7 +65,6 @@ module.exports.GetData = async (req, res, next) => {
                         rooms[i].noOfRoom -
                         reservedRoom[y].booking[x].noOfRooms;
                       if (rooms.indexOf(rooms[i]) == -1) {
-                        console.log("room");
                         rooms.push(rooms[i]);
                       }
                     }
@@ -122,7 +122,7 @@ module.exports.RoomNumber = async (req, res, next) => {
                 if (error) {
                   res.status(400).json("something went wrong" + error.message);
                 } else {
-                  res.status(200).json("Number of Room Added Successfully");
+                  res.status(201).json("Number of Room Added Successfully");
                 }
               });
             });
@@ -148,14 +148,14 @@ module.exports.Branch = async (req, res, next) => {
       if (error) {
         res.status(400).json("something went wrong" + error.message);
       } else {
-        res.status(200).json("Branch Added Successfully");
+        res.status(201).json("Branch Added Successfully");
       }
     });
   } catch (err) {
     next(err);
   }
 };
-//
+//book rooms and redirect to reciept
 module.exports.RoomBook = async (req, res, next) => {
   try {
     req.body.firstName == undefined && res.json("no");
@@ -177,7 +177,7 @@ module.exports.RoomBook = async (req, res, next) => {
           res.status(400).json("something went wrong" + error.message);
         } else {
           res
-            .status(200)
+            .status(201)
             .json(
               `http://127.0.0.1:5500/Client/customer/receipt.html?id=${saved._id}`
             );
@@ -188,7 +188,8 @@ module.exports.RoomBook = async (req, res, next) => {
     next(e);
   }
 };
-//
+
+//get total rooms for each branch to clerk dashboard
 module.exports.TotalRooms = async (req, res, next) => {
   try {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
@@ -210,6 +211,7 @@ module.exports.TotalRooms = async (req, res, next) => {
     next(e);
   }
 };
+//get number of each room for the clerk's branch
 module.exports.specificrooms = async (req, res, next) => {
   try {
     var branchId = mongoose.Types.ObjectId(req.user.branch);
@@ -226,7 +228,7 @@ module.exports.specificrooms = async (req, res, next) => {
     next(e);
   }
 };
-
+//get the reciept details with the reservation ID
 module.exports.reciept = async (req, res, next) => {
   try {
     Reservation.findById(req.params.id)
@@ -249,7 +251,7 @@ module.exports.reciept = async (req, res, next) => {
     next(e);
   }
 };
-
+//make the payment for the reservation
 module.exports.pay = async (req, res, next) => {
   try {
     var reservation = mongoose.Types.ObjectId(req.body.reservation);
@@ -272,7 +274,7 @@ module.exports.pay = async (req, res, next) => {
     next(e);
   }
 };
-
+//checkin the reserved customers
 module.exports.checkin = async (req, res, next) => {
   const booking = new BookedRooms({
     reservation: req.body.reservation,
@@ -320,6 +322,46 @@ module.exports.getcoupon = async (req, res, next) => {
   {
     next(e);
   }
+};
+
+module.exports.reservationsearch = async (req, res, next) => {
+  if (req.body.reservationID.match(/^[0-9a-fA-F]{24}$/)) {
+    var id = mongoose.Types.ObjectId(req.body.reservationID);
+    let reserve = await Reservation.findById(id);
+    let roomID = [];
+    if (reserve) {
+      for (let i = 0; i < reserve.booking.length; i++) {
+        let room = await RoomNumber.aggregate([
+          {
+            $match: {
+              _id: reserve.booking[i].room,
+            },
+          },
+          {
+            $project: {
+              room: {
+                $filter: {
+                  input: "$room",
+                  as: "rooms",
+                  cond: {
+                    $eq: ["$$rooms.status", true],
+                  },
+                },
+              },
+            },
+          },
+        ]);
+        roomID.push(room[0].room.slice(0, reserve.booking[i].noOfRooms));
+      }
+      let rese = [];
+
+      rese.push({ reserve, roomID });
+
+      return res.status(200).json(rese[0]);
+    }
+    res.status(400).json("Invalid reservationID");
+  }
+  res.status(400).json("Invalid reservationID");
 };
 
 var cron = require("node-cron");
