@@ -5,28 +5,24 @@ const Branch = require("../Models/BranchModel");
 module.exports.login = async (req, res, next) => {
   try {
     //check if user is available
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).json("Email Dosn't exists");
+    const user = await User.findOne({ email: req.body.email }); //1
+    if (!user) return res.status(400).json("Email Dosn't exists"); //2 -> 3
     //compare the password
-    const match = req.body.password == user.password;
-    if (!match) return res.status(400).json("Invalid Password");
+    const match = req.body.password == user.password; //4
+    if (!match) return res.status(400).json("Invalid Password"); //5 -> 6
 
-    if (user && match) {
-      const token = jwt.sign(
-        {
-          _id: user._id,
-          email: user.email,
-          account: user.account,
-          branch: user.branch != "" ? user.branch : "admin",
-        },
-        process.env.TOKEN_SECRET
-      );
-      res.json({
-        Access_Token: token,
-      });
-      return;
-    }
-    res.send("failed");
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        email: user.email,
+        account: user.account,
+        branch: user.branch != "" ? user.branch : "admin",
+      },
+      process.env.TOKEN_SECRET
+    );
+    res.json({
+      Access_Token: token,
+    });
   } catch (err) {
     next(err);
   }

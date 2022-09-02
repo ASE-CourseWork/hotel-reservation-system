@@ -27,7 +27,7 @@ router.get("/reservation/reciept/:id", Room.reciept);
 
 router.post("/pay", Room.pay);
 
-router.post("/checkin", Room.checkin);
+router.post("/checkin", verify, Room.checkin);
 
 router.post("/addcoupon", Room.addcoupon);
 

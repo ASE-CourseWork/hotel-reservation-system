@@ -185,6 +185,7 @@ document.getElementById("search").addEventListener("click", function () {
           }
           roomID = data.roomID;
           document.getElementById("roomno").innerText = ":";
+          console.log(JSON.stringify(roomID));
           for (let i = 0; i < data.roomID.length; i++) {
             for (let j = 0; j < data.roomID[i].room.length; j++) {
               document.getElementById("roomno").innerText +=
@@ -197,6 +198,12 @@ document.getElementById("search").addEventListener("click", function () {
 });
 
 document.getElementById("assign").addEventListener("click", function () {
+  return console.log(
+    JSON.stringify({
+      reservation: id,
+      noOfRoom: roomID,
+    })
+  );
   (async () => {
     await fetch("http://127.0.0.1:2001/api/checkin", {
       method: "POST",
